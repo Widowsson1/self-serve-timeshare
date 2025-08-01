@@ -434,7 +434,7 @@
                     SelfServe Timeshare
                 </div>
                 <div class="nav-buttons">
-                    <a href="#" class="btn btn-secondary">Login</a>
+                    <a href="#" class="btn btn-secondary" onclick="openModal('loginModal')">Login</a>
                     <a href="#pricing" class="btn btn-primary">Get Started</a>
                 </div>
             </div>
@@ -687,8 +687,16 @@
                 price: price
             }));
             
-            // Open registration modal
-            openModal('registerModal');
+            // Check if user is already logged in
+            const user = localStorage.getItem('user');
+            if (user) {
+                // User is logged in, proceed to payment
+                const userData = JSON.parse(user);
+                createMembership(userData.id, {type: planType, price: price});
+            } else {
+                // User not logged in, open registration modal
+                openModal('registerModal');
+            }
         }
 
         // Login form submission
