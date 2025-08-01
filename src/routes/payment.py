@@ -1,9 +1,7 @@
 from flask import Blueprint, request, jsonify, render_template, redirect, url_for, flash, session
 import stripe
 import os
-from src.models.user import User
-from src.models.membership import Membership
-from src.database import db
+from src.models.user import User, db
 
 payment_bp = Blueprint('payment', __name__)
 
