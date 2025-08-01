@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subscribe - SelfServe Timeshare</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .plan-details {
+            padding: 40px;
+        }
+        
+        .plan-name {
+            font-size: 2rem;
+            color: #2563eb;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .pricing {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin: 30px 0;
+        }
+        
+        .price-option {
+            text-align: center;
+            padding: 20px;
+            border: 2px solid #e5e7eb;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 200px;
+        }
+        
+        .price-option:hover {
+            border-color: #2563eb;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(37, 99, 235, 0.1);
+        }
+        
+        .price-option.selected {
+            border-color: #2563eb;
+            background: #eff6ff;
+        }
+        
+        .price {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #2563eb;
+        }
+        
+        .billing-cycle {
+            color: #6b7280;
+            margin-top: 5px;
+        }
+        
+        .savings {
+            background: #10b981;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-top: 10px;
+            display: inline-block;
+        }
+        
+        .features {
+            margin: 30px 0;
+        }
+        
+        .features h3 {
+            color: #374151;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        
+        .features ul {
+            list-style: none;
+        }
+        
+        .features li {
+            padding: 10px 0;
+            border-bottom: 1px solid #f3f4f6;
+            color: #6b7280;
+            position: relative;
+            padding-left: 30px;
+        }
+        
+        .features li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #10b981;
+            font-weight: bold;
+        }
+        
+        .subscribe-btn {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 30px;
+        }
+        
+        .subscribe-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(245, 158, 11, 0.3);
+        }
+        
+        .back-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .back-link a {
+            color: #6b7280;
+            text-decoration: none;
+        }
+        
+        .back-link a:hover {
+            color: #2563eb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Subscribe to SelfServe Timeshare</h1>
+            <p>Choose your plan and start listing your timeshares today</p>
+        </div>
+        
+        <div class="plan-details">
+            <h2 class="plan-name">{{ plan.name }}</h2>
+            
+            <div class="pricing">
+                <div class="price-option" data-cycle="monthly">
+                    <div class="price">${{ "%.2f"|format(plan.price_monthly/100) }}</div>
+                    <div class="billing-cycle">per month</div>
+                </div>
+                <div class="price-option" data-cycle="yearly">
+                    <div class="price">${{ "%.2f"|format(plan.price_yearly/100) }}</div>
+                    <div class="billing-cycle">per year</div>
+                    <div class="savings">Save 17%</div>
+                </div>
+            </div>
+            
+            <div class="features">
+                <h3>What's included:</h3>
+                <ul>
+                    {% for feature in plan.features %}
+                    <li>{{ feature }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            
+            <button class="subscribe-btn" onclick="subscribe()">
+                Subscribe Now
+            </button>
+            
+            <div class="back-link">
+                <a href="/">← Back to Home</a>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        let selectedCycle = 'monthly';
+        
+        // Handle price option selection
+        document.querySelectorAll('.price-option').forEach(option => {
+            option.addEventListener('click', function() {
+                document.querySelectorAll('.price-option').forEach(opt => opt.classList.remove('selected'));
+                this.classList.add('selected');
+                selectedCycle = this.dataset.cycle;
+            });
+        });
+        
+        // Set default selection
+        document.querySelector('.price-option[data-cycle="monthly"]').classList.add('selected');
+        
+        async function subscribe() {
+            try {
+                const response = await fetch('/payment/create-checkout-session', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        plan_type: '{{ plan_type }}',
+                        billing_cycle: selectedCycle
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.checkout_url) {
+                    window.location.href = data.checkout_url;
+                } else {
+                    alert('Error creating checkout session: ' + (data.error || 'Unknown error'));
+                }
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        }
+    </script>
+</body>
+</html>
+

@@ -1,5 +1,10 @@
 import os
 import sys
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
+
 # DON'T CHANGE THIS !!!
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 
@@ -9,9 +14,10 @@ from src.models.user import db
 from src.routes.user import user_bp
 from src.routes.listing import listing_bp
 from src.routes.membership import membership_bp
+from src.routes.payment import payment_bp
 
 app = Flask(__name__, static_folder=os.path.join(os.path.dirname(__file__), 'static'))
-app.config['SECRET_KEY'] = 'asdf#FGSgvasgf$5$WGT'
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'asdf#FGSgvasgf$5$WGT')
 
 # Enable CORS for all routes
 CORS(app)
@@ -20,6 +26,7 @@ CORS(app)
 app.register_blueprint(user_bp, url_prefix='/api')
 app.register_blueprint(listing_bp, url_prefix='/api')
 app.register_blueprint(membership_bp, url_prefix='/api')
+app.register_blueprint(payment_bp, url_prefix='/payment')
 
 # Database configuration
 app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{os.path.join(os.path.dirname(__file__), 'database', 'app.db')}"
