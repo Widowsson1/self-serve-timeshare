@@ -38,9 +38,14 @@ from src.models.listing import Listing
 from src.models.membership import Membership
 
 with app.app_context():
-    # Run database migrations before creating tables
-    from src.database_migration import run_migrations
-    run_migrations()
+    # Run direct database fix to ensure schema is correct
+    try:
+        from src.fix_database import fix_database
+        print("🔧 Running database schema fix...")
+        fix_database()
+        print("✅ Database schema fix completed")
+    except Exception as e:
+        print(f"⚠️ Database fix warning: {e}")
     
     # Create all tables
     db.create_all()
