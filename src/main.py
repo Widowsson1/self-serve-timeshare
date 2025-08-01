@@ -1,9 +1,7 @@
 import os
 import sys
-from dotenv import load_dotenv
 
-# Load environment variables
-load_dotenv()
+# Environment variables are loaded directly from Render
 
 # DON'T CHANGE THIS !!!
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
