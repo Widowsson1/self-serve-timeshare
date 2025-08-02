@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Dashboard - SelfServe Timeshare</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f8fafc;
+            color: #334155;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #0f766e 0%, #0d9488 100%);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.2s;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.8;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .dashboard-header {
+            margin-bottom: 2rem;
+        }
+
+        .dashboard-title {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: #1e293b;
+        }
+
+        .dashboard-subtitle {
+            color: #64748b;
+            font-size: 1.1rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border: 1px solid #e2e8f0;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #0f766e;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        .actions-section {
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: #1e293b;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #0f766e 0%, #0d9488 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(15, 118, 110, 0.3);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #0f766e;
+            border: 2px solid #0f766e;
+        }
+
+        .btn-secondary:hover {
+            background: #0f766e;
+            color: white;
+        }
+
+        .listings-section {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border: 1px solid #e2e8f0;
+        }
+
+        .listings-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .listing-card {
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            transition: all 0.2s;
+        }
+
+        .listing-card:hover {
+            border-color: #0f766e;
+            box-shadow: 0 2px 8px rgba(15, 118, 110, 0.1);
+        }
+
+        .listing-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+        }
+
+        .listing-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .listing-detail {
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        .listing-actions {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-small {
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+        }
+
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+
+        .status-active {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .status-inactive {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: #64748b;
+        }
+
+        .empty-state-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #1e293b;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #64748b;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #374151;
+        }
+
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .header-content {
+                padding: 0 1rem;
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .nav-links {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">SelfServe Timeshare</div>
+            <nav class="nav-links">
+                <a href="/">Home</a>
+                <a href="/listings">Browse Listings</a>
+                <a href="/dashboard">My Dashboard</a>
+            </nav>
+            <div class="user-info">
+                <span id="userGreeting">Welcome!</span>
+                <button onclick="logout()" class="btn btn-secondary btn-small">Logout</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="dashboard-header">
+            <h1 class="dashboard-title">My Dashboard</h1>
+            <p class="dashboard-subtitle">Manage your timeshare listings and track performance</p>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number" id="activeListings">0</div>
+                <div class="stat-label">Active Listings</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="totalViews">0</div>
+                <div class="stat-label">Total Views</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="totalInquiries">0</div>
+                <div class="stat-label">Inquiries</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="membershipType">Basic</div>
+                <div class="stat-label">Membership Plan</div>
+            </div>
+        </div>
+
+        <div class="actions-section">
+            <h2 class="section-title">Quick Actions</h2>
+            <div class="action-buttons">
+                <button onclick="openCreateListingModal()" class="btn btn-primary">
+                    ➕ Create New Listing
+                </button>
+                <a href="/listings" class="btn btn-secondary">
+                    🔍 Browse All Listings
+                </a>
+                <button onclick="viewAnalytics()" class="btn btn-secondary">
+                    📊 View Analytics
+                </button>
+            </div>
+        </div>
+
+        <div class="listings-section">
+            <div class="listings-header">
+                <h2 class="section-title">My Listings</h2>
+                <button onclick="refreshListings()" class="btn btn-secondary btn-small">
+                    🔄 Refresh
+                </button>
+            </div>
+            <div id="listingsContainer">
+                <div class="empty-state">
+                    <div class="empty-state-icon">🏠</div>
+                    <h3>No listings yet</h3>
+                    <p>Create your first timeshare listing to get started!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create Listing Modal -->
+    <div id="createListingModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Create New Listing</h2>
+                <button class="close-btn" onclick="closeCreateListingModal()">&times;</button>
+            </div>
+            <form id="createListingForm">
+                <div class="form-group">
+                    <label class="form-label">Listing Title *</label>
+                    <input type="text" name="title" class="form-input" required 
+                           placeholder="e.g., Beautiful Ocean View Timeshare at Marriott Resort">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Property Type *</label>
+                    <select name="property_type" class="form-select" required>
+                        <option value="">Select type...</option>
+                        <option value="sale">For Sale Only</option>
+                        <option value="rental">For Rental Only</option>
+                        <option value="both">Both Sale and Rental</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Resort Name *</label>
+                    <input type="text" name="resort_name" class="form-input" required 
+                           placeholder="e.g., Marriott's Ocean Pointe">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">City *</label>
+                        <input type="text" name="city" class="form-input" required placeholder="e.g., Miami">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">State *</label>
+                        <input type="text" name="state" class="form-input" required placeholder="e.g., Florida">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Country *</label>
+                        <input type="text" name="country" class="form-input" required placeholder="e.g., USA">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Zip Code</label>
+                        <input type="text" name="zip_code" class="form-input" placeholder="e.g., 33139">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Bedrooms</label>
+                        <select name="bedrooms" class="form-select">
+                            <option value="">Select...</option>
+                            <option value="0">Studio</option>
+                            <option value="1">1 Bedroom</option>
+                            <option value="2">2 Bedrooms</option>
+                            <option value="3">3 Bedrooms</option>
+                            <option value="4">4+ Bedrooms</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Sleeps</label>
+                        <select name="sleeps" class="form-select">
+                            <option value="">Select...</option>
+                            <option value="2">2 People</option>
+                            <option value="4">4 People</option>
+                            <option value="6">6 People</option>
+                            <option value="8">8 People</option>
+                            <option value="10">10+ People</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Sale Price ($)</label>
+                        <input type="number" name="sale_price" class="form-input" placeholder="e.g., 25000">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Weekly Rental Price ($)</label>
+                        <input type="number" name="rental_price_weekly" class="form-input" placeholder="e.g., 1200">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Description</label>
+                    <textarea name="description" class="form-textarea" 
+                              placeholder="Describe your timeshare property, amenities, and what makes it special..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Contact Email</label>
+                    <input type="email" name="contact_email" class="form-input" 
+                           placeholder="Your contact email (defaults to account email)">
+                </div>
+
+                <div class="action-buttons">
+                    <button type="submit" class="btn btn-primary">Create Listing</button>
+                    <button type="button" onclick="closeCreateListingModal()" class="btn btn-secondary">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let currentUser = null;
+        let userListings = [];
+
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAuthentication();
+            loadUserData();
+            loadListings();
+        });
+
+        function checkAuthentication() {
+            const userId = localStorage.getItem('userId');
+            if (!userId) {
+                window.location.href = '/';
+                return;
+            }
+            currentUser = {
+                id: userId,
+                username: localStorage.getItem('username') || 'User'
+            };
+            document.getElementById('userGreeting').textContent = `Welcome, ${currentUser.username}!`;
+        }
+
+        async function loadUserData() {
+            try {
+                // Load membership information
+                const response = await fetch('/api/memberships', {
+                    headers: {
+                        'X-User-ID': currentUser.id
+                    }
+                });
+                
+                if (response.ok) {
+                    const membershipData = await response.json();
+                    const membershipType = membershipData.membership_type || 'starter_monthly';
+                    
+                    // Map membership types to display names
+                    let displayType = 'Starter';
+                    if (membershipType.includes('starter')) {
+                        displayType = 'Starter';
+                    } else if (membershipType.includes('basic')) {
+                        displayType = 'Basic';
+                    } else if (membershipType.includes('premium')) {
+                        displayType = 'Premium';
+                    } else if (membershipType.includes('unlimited')) {
+                        displayType = 'Unlimited';
+                    }
+                    
+                    document.getElementById('membershipType').textContent = displayType;
+                }
+            } catch (error) {
+                console.error('Error loading user data:', error);
+            }
+        }
+
+        async function loadListings() {
+            try {
+                const response = await fetch(`/api/users/${currentUser.id}/listings`, {
+                    headers: {
+                        'X-User-ID': currentUser.id
+                    }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    userListings = data.listings;
+                    displayListings();
+                    updateStats();
+                } else {
+                    console.error('Failed to load listings');
+                }
+            } catch (error) {
+                console.error('Error loading listings:', error);
+            }
+        }
+
+        function displayListings() {
+            const container = document.getElementById('listingsContainer');
+            
+            if (userListings.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">🏠</div>
+                        <h3>No listings yet</h3>
+                        <p>Create your first timeshare listing to get started!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = userListings.map(listing => `
+                <div class="listing-card">
+                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                        <h3 class="listing-title">${listing.title}</h3>
+                        <span class="status-badge status-${listing.status}">
+                            ${listing.status}
+                        </span>
+                    </div>
+                    
+                    <div class="listing-details">
+                        <div class="listing-detail">
+                            <strong>Resort:</strong> ${listing.resort_name}
+                        </div>
+                        <div class="listing-detail">
+                            <strong>Location:</strong> ${listing.location_display}
+                        </div>
+                        <div class="listing-detail">
+                            <strong>Type:</strong> ${listing.property_type}
+                        </div>
+                        <div class="listing-detail">
+                            <strong>Price:</strong> ${listing.price_display}
+                        </div>
+                        <div class="listing-detail">
+                            <strong>Views:</strong> ${listing.view_count}
+                        </div>
+                        <div class="listing-detail">
+                            <strong>Inquiries:</strong> ${listing.inquiry_count}
+                        </div>
+                    </div>
+                    
+                    <div class="listing-actions">
+                        <button onclick="viewListing(${listing.id})" class="btn btn-secondary btn-small">
+                            👁️ View
+                        </button>
+                        <button onclick="editListing(${listing.id})" class="btn btn-secondary btn-small">
+                            ✏️ Edit
+                        </button>
+                        <button onclick="toggleListingStatus(${listing.id}, '${listing.status}')" 
+                                class="btn btn-secondary btn-small">
+                            ${listing.status === 'active' ? '⏸️ Deactivate' : '▶️ Activate'}
+                        </button>
+                        <button onclick="deleteListing(${listing.id})" class="btn btn-secondary btn-small" 
+                                style="color: #dc2626;">
+                            🗑️ Delete
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function updateStats() {
+            const activeListings = userListings.filter(l => l.status === 'active').length;
+            const totalViews = userListings.reduce((sum, l) => sum + l.view_count, 0);
+            const totalInquiries = userListings.reduce((sum, l) => sum + l.inquiry_count, 0);
+            
+            document.getElementById('activeListings').textContent = activeListings;
+            document.getElementById('totalViews').textContent = totalViews;
+            document.getElementById('totalInquiries').textContent = totalInquiries;
+        }
+
+        function openCreateListingModal() {
+            document.getElementById('createListingModal').style.display = 'block';
+        }
+
+        function closeCreateListingModal() {
+            document.getElementById('createListingModal').style.display = 'none';
+            document.getElementById('createListingForm').reset();
+        }
+
+        document.getElementById('createListingForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const listingData = Object.fromEntries(formData.entries());
+            
+            // Convert numeric fields
+            ['bedrooms', 'sleeps', 'sale_price', 'rental_price_weekly'].forEach(field => {
+                if (listingData[field]) {
+                    listingData[field] = parseFloat(listingData[field]);
+                }
+            });
+            
+            try {
+                const response = await fetch('/api/listings', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-User-ID': currentUser.id
+                    },
+                    body: JSON.stringify(listingData)
+                });
+                
+                if (response.ok) {
+                    closeCreateListingModal();
+                    loadListings(); // Refresh listings
+                    alert('Listing created successfully!');
+                } else {
+                    const error = await response.json();
+                    alert(`Error creating listing: ${error.error}`);
+                }
+            } catch (error) {
+                console.error('Error creating listing:', error);
+                alert('Error creating listing. Please try again.');
+            }
+        });
+
+        function refreshListings() {
+            loadListings();
+        }
+
+        function viewListing(listingId) {
+            window.open(`/listing/${listingId}`, '_blank');
+        }
+
+        function editListing(listingId) {
+            // TODO: Implement edit functionality
+            alert('Edit functionality coming soon!');
+        }
+
+        async function toggleListingStatus(listingId, currentStatus) {
+            const newStatus = currentStatus === 'active' ? 'inactive' : 'active';
+            
+            try {
+                const response = await fetch(`/api/listings/${listingId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-User-ID': currentUser.id
+                    },
+                    body: JSON.stringify({ status: newStatus })
+                });
+                
+                if (response.ok) {
+                    loadListings(); // Refresh listings
+                } else {
+                    alert('Error updating listing status');
+                }
+            } catch (error) {
+                console.error('Error updating listing:', error);
+                alert('Error updating listing status');
+            }
+        }
+
+        async function deleteListing(listingId) {
+            if (!confirm('Are you sure you want to delete this listing? This action cannot be undone.')) {
+                return;
+            }
+            
+            try {
+                const response = await fetch(`/api/listings/${listingId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-User-ID': currentUser.id
+                    }
+                });
+                
+                if (response.ok) {
+                    loadListings(); // Refresh listings
+                    alert('Listing deleted successfully');
+                } else {
+                    alert('Error deleting listing');
+                }
+            } catch (error) {
+                console.error('Error deleting listing:', error);
+                alert('Error deleting listing');
+            }
+        }
+
+        function viewAnalytics() {
+            alert('Analytics feature coming soon!');
+        }
+
+        function logout() {
+            localStorage.clear();
+            window.location.href = '/';
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('createListingModal');
+            if (event.target === modal) {
+                closeCreateListingModal();
+            }
+        }
+    </script>
+</body>
+</html>
+

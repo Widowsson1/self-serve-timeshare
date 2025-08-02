@@ -105,6 +105,11 @@ def run_migrations():
     
     try:
         migrate_user_table()
+        
+        # Run listing migration
+        from src.database_migration_listings import run_listings_migration
+        run_listings_migration()
+        
         print("✅ All migrations completed successfully")
     except Exception as e:
         print(f"❌ Migration failed: {e}")

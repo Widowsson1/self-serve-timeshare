@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Favorites - SelfServe Timeshare</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f8fafc;
+            color: #334155;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #0f766e 0%, #0d9488 100%);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.2s;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.8;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .page-header {
+            margin-bottom: 2rem;
+        }
+
+        .page-title {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: #1e293b;
+        }
+
+        .page-subtitle {
+            color: #64748b;
+            font-size: 1.1rem;
+        }
+
+        .favorites-stats {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #0f766e;
+        }
+
+        .stat-label {
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        .favorites-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .favorite-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border: 1px solid #e2e8f0;
+            transition: all 0.2s;
+        }
+
+        .favorite-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(15, 118, 110, 0.15);
+            border-color: #0f766e;
+        }
+
+        .listing-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #64748b;
+            font-size: 3rem;
+            position: relative;
+        }
+
+        .favorite-date {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+        }
+
+        .listing-content {
+            padding: 1.5rem;
+        }
+
+        .property-type-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        .type-sale {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .type-rental {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .type-both {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .listing-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
+        }
+
+        .listing-resort {
+            color: #0f766e;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .listing-location {
+            color: #64748b;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .listing-price {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #0f766e;
+            margin-bottom: 1rem;
+        }
+
+        .favorite-notes {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 0.75rem;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            color: #64748b;
+            min-height: 60px;
+        }
+
+        .favorite-notes-input {
+            width: 100%;
+            border: none;
+            background: transparent;
+            resize: vertical;
+            min-height: 40px;
+            font-family: inherit;
+            font-size: inherit;
+            color: inherit;
+        }
+
+        .favorite-notes-input:focus {
+            outline: none;
+        }
+
+        .favorite-actions {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #0f766e 0%, #0d9488 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(15, 118, 110, 0.3);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #0f766e;
+            border: 1px solid #0f766e;
+        }
+
+        .btn-secondary:hover {
+            background: #0f766e;
+            color: white;
+        }
+
+        .btn-danger {
+            background: white;
+            color: #ef4444;
+            border: 1px solid #ef4444;
+        }
+
+        .btn-danger:hover {
+            background: #ef4444;
+            color: white;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: #64748b;
+        }
+
+        .empty-state-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: #64748b;
+        }
+
+        .auth-prompt {
+            background: white;
+            border-radius: 12px;
+            padding: 3rem;
+            text-align: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border: 1px solid #e2e8f0;
+        }
+
+        .auth-prompt-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .auth-prompt h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #1e293b;
+        }
+
+        .auth-prompt p {
+            color: #64748b;
+            margin-bottom: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .header-content {
+                padding: 0 1rem;
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .nav-links {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .favorites-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .favorites-stats {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">SelfServe Timeshare</div>
+            <nav class="nav-links">
+                <a href="/">Home</a>
+                <a href="/listings">Browse Listings</a>
+                <a href="/favorites">My Favorites</a>
+                <a href="/dashboard" id="dashboardLink" style="display: none;">My Dashboard</a>
+                <button onclick="showAuthModal()" class="btn btn-secondary btn-small" id="authBtn">Sign Up Free</button>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="page-header">
+            <h1 class="page-title">My Favorites</h1>
+            <p class="page-subtitle">Keep track of timeshare listings you're interested in</p>
+        </div>
+
+        <div id="favoritesContent">
+            <div class="loading">
+                <div>🔄 Loading your favorites...</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let currentUser = null;
+        let userFavorites = [];
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAuthentication();
+            if (currentUser) {
+                loadFavorites();
+            } else {
+                showAuthPrompt();
+            }
+        });
+
+        function checkAuthentication() {
+            const userId = localStorage.getItem('userId');
+            if (userId) {
+                currentUser = {
+                    id: userId,
+                    username: localStorage.getItem('username') || 'User',
+                    accountType: localStorage.getItem('accountType') || 'browser'
+                };
+                
+                // Update navigation
+                if (currentUser.accountType === 'subscriber') {
+                    document.getElementById('dashboardLink').style.display = 'inline-block';
+                }
+                document.getElementById('authBtn').textContent = 'Logout';
+                document.getElementById('authBtn').onclick = logout;
+            }
+        }
+
+        async function loadFavorites() {
+            try {
+                const response = await fetch('/api/favorites', {
+                    headers: {
+                        'X-User-ID': currentUser.id
+                    }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    userFavorites = data.favorites;
+                    displayFavorites();
+                } else {
+                    showError('Failed to load favorites');
+                }
+            } catch (error) {
+                console.error('Error loading favorites:', error);
+                showError('Error loading favorites');
+            }
+        }
+
+        function displayFavorites() {
+            const container = document.getElementById('favoritesContent');
+            
+            if (userFavorites.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">❤️</div>
+                        <h3>No favorites yet</h3>
+                        <p>Start browsing listings and save your favorites to keep track of properties you're interested in.</p>
+                        <a href="/listings" class="btn btn-primary" style="margin-top: 1rem;">
+                            Browse Listings
+                        </a>
+                    </div>
+                `;
+                return;
+            }
+
+            const statsHtml = `
+                <div class="favorites-stats">
+                    <div class="stat-item">
+                        <div class="stat-number">${userFavorites.length}</div>
+                        <div class="stat-label">Saved Favorites</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">${userFavorites.filter(f => f.property_type === 'sale').length}</div>
+                        <div class="stat-label">For Sale</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">${userFavorites.filter(f => f.property_type === 'rental').length}</div>
+                        <div class="stat-label">For Rental</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">${userFavorites.filter(f => f.property_type === 'both').length}</div>
+                        <div class="stat-label">Both</div>
+                    </div>
+                </div>
+            `;
+
+            const favoritesHtml = `
+                <div class="favorites-grid">
+                    ${userFavorites.map(favorite => createFavoriteCard(favorite)).join('')}
+                </div>
+            `;
+
+            container.innerHTML = statsHtml + favoritesHtml;
+        }
+
+        function createFavoriteCard(favorite) {
+            const propertyTypeClass = `type-${favorite.property_type}`;
+            const propertyTypeText = favorite.property_type === 'both' ? 'Sale & Rental' : 
+                                   favorite.property_type === 'sale' ? 'For Sale' : 'For Rental';
+            
+            const favoritedDate = new Date(favorite.favorited_at).toLocaleDateString('en-US', {
+                month: 'short',
+                day: 'numeric'
+            });
+
+            return `
+                <div class="favorite-card">
+                    <div class="listing-image" onclick="viewListing(${favorite.id})">
+                        ${favorite.main_photo_url ? 
+                            `<img src="${favorite.main_photo_url}" alt="${favorite.title}" style="width: 100%; height: 100%; object-fit: cover;">` :
+                            '🏠'
+                        }
+                        <div class="favorite-date">Saved ${favoritedDate}</div>
+                    </div>
+                    <div class="listing-content">
+                        <div class="property-type-badge ${propertyTypeClass}">
+                            ${propertyTypeText}
+                        </div>
+                        <h3 class="listing-title">${favorite.title}</h3>
+                        <div class="listing-resort">${favorite.resort_name}</div>
+                        <div class="listing-location">${favorite.location_display}</div>
+                        <div class="listing-price">${favorite.price_display}</div>
+                        
+                        <div class="favorite-notes">
+                            <textarea 
+                                class="favorite-notes-input" 
+                                placeholder="Add your notes about this property..."
+                                onchange="updateFavoriteNotes(${favorite.favorite_id}, this.value)"
+                            >${favorite.favorite_notes || ''}</textarea>
+                        </div>
+                        
+                        <div class="favorite-actions">
+                            <button onclick="viewListing(${favorite.id})" class="btn btn-primary">
+                                👁️ View Details
+                            </button>
+                            <button onclick="shareFavorite(${favorite.id})" class="btn btn-secondary">
+                                🔗 Share
+                            </button>
+                            <button onclick="removeFavorite(${favorite.favorite_id})" class="btn btn-danger">
+                                🗑️ Remove
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function viewListing(listingId) {
+            window.open(`/listing/${listingId}`, '_blank');
+        }
+
+        async function updateFavoriteNotes(favoriteId, notes) {
+            try {
+                const response = await fetch(`/api/favorites/${favoriteId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-User-ID': currentUser.id
+                    },
+                    body: JSON.stringify({ notes: notes })
+                });
+                
+                if (!response.ok) {
+                    console.error('Failed to update notes');
+                }
+            } catch (error) {
+                console.error('Error updating notes:', error);
+            }
+        }
+
+        async function removeFavorite(favoriteId) {
+            if (!confirm('Are you sure you want to remove this listing from your favorites?')) {
+                return;
+            }
+            
+            try {
+                const response = await fetch(`/api/favorites/${favoriteId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-User-ID': currentUser.id
+                    }
+                });
+                
+                if (response.ok) {
+                    // Remove from local array and refresh display
+                    userFavorites = userFavorites.filter(f => f.favorite_id !== favoriteId);
+                    displayFavorites();
+                } else {
+                    alert('Failed to remove favorite');
+                }
+            } catch (error) {
+                console.error('Error removing favorite:', error);
+                alert('Error removing favorite');
+            }
+        }
+
+        function shareFavorite(listingId) {
+            const url = `${window.location.origin}/listing/${listingId}`;
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Check out this timeshare listing',
+                    url: url
+                });
+            } else {
+                navigator.clipboard.writeText(url).then(() => {
+                    alert('Listing URL copied to clipboard!');
+                }).catch(() => {
+                    alert(`Share this listing: ${url}`);
+                });
+            }
+        }
+
+        function showAuthPrompt() {
+            document.getElementById('favoritesContent').innerHTML = `
+                <div class="auth-prompt">
+                    <div class="auth-prompt-icon">❤️</div>
+                    <h3>Sign Up to Save Favorites</h3>
+                    <p>Create a free browser account to save your favorite timeshare listings and keep track of properties you're interested in.</p>
+                    <button onclick="showAuthModal()" class="btn btn-primary">
+                        Sign Up Free - It's Quick!
+                    </button>
+                    <p style="margin-top: 1rem; font-size: 0.9rem;">
+                        Already have an account? <a href="#" onclick="showLoginModal()" style="color: #0f766e;">Sign In</a>
+                    </p>
+                </div>
+            `;
+        }
+
+        function showAuthModal() {
+            // TODO: Implement browser account registration modal
+            alert('Free browser account registration coming soon!');
+        }
+
+        function showLoginModal() {
+            // TODO: Implement browser account login modal
+            alert('Browser account login coming soon!');
+        }
+
+        function logout() {
+            localStorage.clear();
+            window.location.href = '/';
+        }
+
+        function showError(message) {
+            document.getElementById('favoritesContent').innerHTML = `
+                <div class="empty-state">
+                    <div class="empty-state-icon">⚠️</div>
+                    <h3>Error Loading Favorites</h3>
+                    <p>${message}</p>
+                    <button onclick="loadFavorites()" class="btn btn-primary">Try Again</button>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>
+

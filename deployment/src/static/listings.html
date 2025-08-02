@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browse Timeshare Listings - SelfServe Timeshare</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f8fafc;
+            color: #334155;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #0f766e 0%, #0d9488 100%);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.2s;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.8;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: #1e293b;
+        }
+
+        .page-subtitle {
+            color: #64748b;
+            font-size: 1.1rem;
+        }
+
+        .search-section {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border: 1px solid #e2e8f0;
+        }
+
+        .search-form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .search-input, .search-select {
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+
+        .search-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #0f766e 0%, #0d9488 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(15, 118, 110, 0.3);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #0f766e;
+            border: 2px solid #0f766e;
+        }
+
+        .btn-secondary:hover {
+            background: #0f766e;
+            color: white;
+        }
+
+        .results-section {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .filters-sidebar {
+            width: 300px;
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            height: fit-content;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border: 1px solid #e2e8f0;
+        }
+
+        .filter-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .filter-title {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: #1e293b;
+        }
+
+        .filter-input {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            margin-bottom: 0.5rem;
+        }
+
+        .listings-content {
+            flex: 1;
+        }
+
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            background: white;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .results-count {
+            color: #64748b;
+        }
+
+        .sort-select {
+            padding: 0.5rem;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+        }
+
+        .listings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .listing-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border: 1px solid #e2e8f0;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .listing-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(15, 118, 110, 0.15);
+            border-color: #0f766e;
+        }
+
+        .listing-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #64748b;
+            font-size: 3rem;
+        }
+
+        .listing-content {
+            padding: 1.5rem;
+        }
+
+        .listing-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
+        }
+
+        .listing-resort {
+            color: #0f766e;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .listing-location {
+            color: #64748b;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .listing-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .listing-detail {
+            color: #64748b;
+        }
+
+        .listing-price {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #0f766e;
+            margin-bottom: 1rem;
+        }
+
+        .listing-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-small {
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+        }
+
+        .favorite-btn {
+            background: none;
+            border: 1px solid #d1d5db;
+            color: #64748b;
+            border-radius: 6px;
+            padding: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .favorite-btn:hover {
+            border-color: #ef4444;
+            color: #ef4444;
+        }
+
+        .favorite-btn.favorited {
+            border-color: #ef4444;
+            color: #ef4444;
+            background: #fef2f2;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 2rem;
+        }
+
+        .pagination button {
+            padding: 0.5rem 1rem;
+            border: 1px solid #d1d5db;
+            background: white;
+            color: #64748b;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .pagination button:hover:not(:disabled) {
+            border-color: #0f766e;
+            color: #0f766e;
+        }
+
+        .pagination button.active {
+            background: #0f766e;
+            color: white;
+            border-color: #0f766e;
+        }
+
+        .pagination button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: #64748b;
+        }
+
+        .empty-state-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: #64748b;
+        }
+
+        .property-type-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        .type-sale {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .type-rental {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .type-both {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .header-content {
+                padding: 0 1rem;
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .nav-links {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .results-section {
+                flex-direction: column;
+            }
+            
+            .filters-sidebar {
+                width: 100%;
+            }
+            
+            .search-form {
+                grid-template-columns: 1fr;
+            }
+            
+            .listings-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .results-header {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: stretch;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">SelfServe Timeshare</div>
+            <nav class="nav-links">
+                <a href="/">Home</a>
+                <a href="/listings">Browse Listings</a>
+                <a href="/dashboard" id="dashboardLink" style="display: none;">My Dashboard</a>
+                <button onclick="showAuthModal()" class="btn btn-secondary btn-small" id="authBtn">Sign Up Free</button>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="page-header">
+            <h1 class="page-title">Browse Timeshare Listings</h1>
+            <p class="page-subtitle">Find your perfect timeshare for sale or rental</p>
+        </div>
+
+        <div class="search-section">
+            <form class="search-form" id="searchForm">
+                <input type="text" name="q" class="search-input" placeholder="Search by resort, city, or location...">
+                <select name="property_type" class="search-select">
+                    <option value="">All Types</option>
+                    <option value="sale">For Sale</option>
+                    <option value="rental">For Rental</option>
+                    <option value="both">Both</option>
+                </select>
+                <input type="text" name="city" class="search-input" placeholder="City">
+                <input type="text" name="state" class="search-input" placeholder="State">
+                <select name="bedrooms" class="search-select">
+                    <option value="">Any Bedrooms</option>
+                    <option value="0">Studio</option>
+                    <option value="1">1+ Bedrooms</option>
+                    <option value="2">2+ Bedrooms</option>
+                    <option value="3">3+ Bedrooms</option>
+                </select>
+            </form>
+            <div class="search-actions">
+                <button type="submit" form="searchForm" class="btn btn-primary">
+                    🔍 Search Listings
+                </button>
+                <button onclick="clearSearch()" class="btn btn-secondary">
+                    🔄 Clear Filters
+                </button>
+            </div>
+        </div>
+
+        <div class="results-section">
+            <div class="filters-sidebar">
+                <div class="filter-group">
+                    <div class="filter-title">Price Range</div>
+                    <input type="number" id="minPrice" class="filter-input" placeholder="Min Price ($)">
+                    <input type="number" id="maxPrice" class="filter-input" placeholder="Max Price ($)">
+                </div>
+                
+                <div class="filter-group">
+                    <div class="filter-title">Property Features</div>
+                    <select id="sleepsFilter" class="filter-input">
+                        <option value="">Any Occupancy</option>
+                        <option value="2">2+ People</option>
+                        <option value="4">4+ People</option>
+                        <option value="6">6+ People</option>
+                        <option value="8">8+ People</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <button onclick="applyFilters()" class="btn btn-primary" style="width: 100%;">
+                        Apply Filters
+                    </button>
+                </div>
+            </div>
+
+            <div class="listings-content">
+                <div class="results-header">
+                    <div class="results-count" id="resultsCount">Loading listings...</div>
+                    <select id="sortSelect" class="sort-select" onchange="sortListings()">
+                        <option value="created_at_desc">Newest First</option>
+                        <option value="created_at_asc">Oldest First</option>
+                        <option value="price_asc">Price: Low to High</option>
+                        <option value="price_desc">Price: High to Low</option>
+                        <option value="view_count_desc">Most Popular</option>
+                    </select>
+                </div>
+
+                <div id="listingsContainer">
+                    <div class="loading">
+                        <div>🔄 Loading listings...</div>
+                    </div>
+                </div>
+
+                <div class="pagination" id="pagination" style="display: none;">
+                    <!-- Pagination will be generated by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let currentListings = [];
+        let currentPage = 1;
+        let totalPages = 1;
+        let currentUser = null;
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAuthentication();
+            loadListings();
+            
+            // Set up search form
+            document.getElementById('searchForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                searchListings();
+            });
+        });
+
+        function checkAuthentication() {
+            const userId = localStorage.getItem('userId');
+            if (userId) {
+                currentUser = {
+                    id: userId,
+                    username: localStorage.getItem('username') || 'User'
+                };
+                document.getElementById('dashboardLink').style.display = 'inline-block';
+                document.getElementById('authBtn').textContent = 'Logout';
+                document.getElementById('authBtn').onclick = logout;
+            }
+        }
+
+        async function loadListings(page = 1, filters = {}) {
+            try {
+                const params = new URLSearchParams({
+                    page: page,
+                    per_page: 12,
+                    ...filters
+                });
+
+                const response = await fetch(`/api/listings?${params}`);
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    currentListings = data.listings;
+                    currentPage = data.pagination.page;
+                    totalPages = data.pagination.pages;
+                    
+                    displayListings();
+                    updatePagination();
+                    updateResultsCount(data.pagination.total);
+                } else {
+                    showError('Failed to load listings');
+                }
+            } catch (error) {
+                console.error('Error loading listings:', error);
+                showError('Error loading listings');
+            }
+        }
+
+        function displayListings() {
+            const container = document.getElementById('listingsContainer');
+            
+            if (currentListings.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">🏠</div>
+                        <h3>No listings found</h3>
+                        <p>Try adjusting your search criteria or browse all listings.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = `
+                <div class="listings-grid">
+                    ${currentListings.map(listing => createListingCard(listing)).join('')}
+                </div>
+            `;
+        }
+
+        function createListingCard(listing) {
+            const propertyTypeClass = `type-${listing.property_type}`;
+            const propertyTypeText = listing.property_type === 'both' ? 'Sale & Rental' : 
+                                   listing.property_type === 'sale' ? 'For Sale' : 'For Rental';
+
+            return `
+                <div class="listing-card" onclick="viewListing(${listing.id})">
+                    <div class="listing-image">
+                        ${listing.main_photo_url ? 
+                            `<img src="${listing.main_photo_url}" alt="${listing.title}" style="width: 100%; height: 100%; object-fit: cover;">` :
+                            '🏠'
+                        }
+                    </div>
+                    <div class="listing-content">
+                        <div class="property-type-badge ${propertyTypeClass}">
+                            ${propertyTypeText}
+                        </div>
+                        <h3 class="listing-title">${listing.title}</h3>
+                        <div class="listing-resort">${listing.resort_name}</div>
+                        <div class="listing-location">${listing.location_display}</div>
+                        
+                        <div class="listing-details">
+                            ${listing.bedrooms ? `<div class="listing-detail">🛏️ ${listing.bedrooms} BR</div>` : ''}
+                            ${listing.sleeps ? `<div class="listing-detail">👥 Sleeps ${listing.sleeps}</div>` : ''}
+                            ${listing.view_type ? `<div class="listing-detail">🌅 ${listing.view_type}</div>` : ''}
+                            <div class="listing-detail">👁️ ${listing.view_count} views</div>
+                        </div>
+                        
+                        <div class="listing-price">${listing.price_display}</div>
+                        
+                        <div class="listing-actions" onclick="event.stopPropagation();">
+                            <button onclick="viewListing(${listing.id})" class="btn btn-primary btn-small">
+                                View Details
+                            </button>
+                            <button onclick="toggleFavorite(${listing.id})" class="favorite-btn" id="fav-${listing.id}">
+                                ❤️
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function updatePagination() {
+            const container = document.getElementById('pagination');
+            
+            if (totalPages <= 1) {
+                container.style.display = 'none';
+                return;
+            }
+
+            container.style.display = 'flex';
+            
+            let paginationHTML = '';
+            
+            // Previous button
+            paginationHTML += `
+                <button onclick="changePage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''}>
+                    ← Previous
+                </button>
+            `;
+            
+            // Page numbers
+            const startPage = Math.max(1, currentPage - 2);
+            const endPage = Math.min(totalPages, currentPage + 2);
+            
+            if (startPage > 1) {
+                paginationHTML += `<button onclick="changePage(1)">1</button>`;
+                if (startPage > 2) {
+                    paginationHTML += `<span>...</span>`;
+                }
+            }
+            
+            for (let i = startPage; i <= endPage; i++) {
+                paginationHTML += `
+                    <button onclick="changePage(${i})" ${i === currentPage ? 'class="active"' : ''}>
+                        ${i}
+                    </button>
+                `;
+            }
+            
+            if (endPage < totalPages) {
+                if (endPage < totalPages - 1) {
+                    paginationHTML += `<span>...</span>`;
+                }
+                paginationHTML += `<button onclick="changePage(${totalPages})">${totalPages}</button>`;
+            }
+            
+            // Next button
+            paginationHTML += `
+                <button onclick="changePage(${currentPage + 1})" ${currentPage === totalPages ? 'disabled' : ''}>
+                    Next →
+                </button>
+            `;
+            
+            container.innerHTML = paginationHTML;
+        }
+
+        function updateResultsCount(total) {
+            document.getElementById('resultsCount').textContent = 
+                `${total} listing${total !== 1 ? 's' : ''} found`;
+        }
+
+        function changePage(page) {
+            if (page >= 1 && page <= totalPages && page !== currentPage) {
+                loadListings(page, getCurrentFilters());
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        function getCurrentFilters() {
+            const formData = new FormData(document.getElementById('searchForm'));
+            const filters = Object.fromEntries(formData.entries());
+            
+            // Add sidebar filters
+            const minPrice = document.getElementById('minPrice').value;
+            const maxPrice = document.getElementById('maxPrice').value;
+            const sleeps = document.getElementById('sleepsFilter').value;
+            
+            if (minPrice) filters.min_price = minPrice;
+            if (maxPrice) filters.max_price = maxPrice;
+            if (sleeps) filters.sleeps = sleeps;
+            
+            // Add sorting
+            const sortValue = document.getElementById('sortSelect').value;
+            const [sortBy, sortOrder] = sortValue.split('_');
+            filters.sort_by = sortBy;
+            filters.sort_order = sortOrder;
+            
+            return filters;
+        }
+
+        function searchListings() {
+            loadListings(1, getCurrentFilters());
+        }
+
+        function applyFilters() {
+            loadListings(1, getCurrentFilters());
+        }
+
+        function sortListings() {
+            loadListings(currentPage, getCurrentFilters());
+        }
+
+        function clearSearch() {
+            document.getElementById('searchForm').reset();
+            document.getElementById('minPrice').value = '';
+            document.getElementById('maxPrice').value = '';
+            document.getElementById('sleepsFilter').value = '';
+            document.getElementById('sortSelect').value = 'created_at_desc';
+            loadListings(1);
+        }
+
+        function viewListing(listingId) {
+            window.open(`/listing/${listingId}`, '_blank');
+        }
+
+        async function toggleFavorite(listingId) {
+            if (!currentUser) {
+                alert('Please sign up for a free account to save favorites!');
+                showAuthModal();
+                return;
+            }
+            
+            // TODO: Implement favorite functionality
+            alert('Favorites feature coming soon!');
+        }
+
+        function showAuthModal() {
+            // TODO: Show registration modal for browser accounts
+            alert('Free browser account registration coming soon!');
+        }
+
+        function logout() {
+            localStorage.clear();
+            window.location.reload();
+        }
+
+        function showError(message) {
+            document.getElementById('listingsContainer').innerHTML = `
+                <div class="empty-state">
+                    <div class="empty-state-icon">⚠️</div>
+                    <h3>Error Loading Listings</h3>
+                    <p>${message}</p>
+                    <button onclick="loadListings()" class="btn btn-primary">Try Again</button>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>
+

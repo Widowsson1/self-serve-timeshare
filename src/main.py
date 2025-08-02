@@ -10,9 +10,15 @@ from flask import Flask, send_from_directory
 from flask_cors import CORS
 from src.models.user import db
 from src.routes.user import user_bp
-from src.routes.listing import listing_bp
-from src.routes.membership import membership_bp
 from src.routes.payment import payment_bp
+from src.routes.membership import membership_bp
+from src.routes.listing import listing_bp
+from src.routes.dashboard import dashboard_bp
+from src.routes.pages import pages_bp
+from src.routes.inquiry import inquiry_bp
+from src.routes.favorites import favorites_bp
+from src.routes.browser_auth import browser_auth_bp
+from src.routes.pricing import pricing_bp
 
 app = Flask(__name__, static_folder=os.path.join(os.path.dirname(__file__), 'static'))
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'asdf#FGSgvasgf$5$WGT')
@@ -21,10 +27,16 @@ app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'asdf#FGSgvasgf$5$WGT')
 CORS(app)
 
 # Register blueprints
-app.register_blueprint(user_bp, url_prefix='/api')
-app.register_blueprint(listing_bp, url_prefix='/api')
-app.register_blueprint(membership_bp, url_prefix='/api')
-app.register_blueprint(payment_bp, url_prefix='/payment')
+app.register_blueprint(user_bp)
+app.register_blueprint(payment_bp)
+app.register_blueprint(membership_bp)
+app.register_blueprint(listing_bp)
+app.register_blueprint(dashboard_bp)
+app.register_blueprint(pages_bp)
+app.register_blueprint(inquiry_bp)
+app.register_blueprint(favorites_bp)
+app.register_blueprint(browser_auth_bp)
+app.register_blueprint(pricing_bp)
 
 # Database configuration
 app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{os.path.join(os.path.dirname(__file__), 'database', 'app.db')}"
@@ -45,21 +57,33 @@ with app.app_context():
     # Create all tables
     db.create_all()
 
-@app.route('/', defaults={'path': ''})
-@app.route('/<path:path>')
-def serve(path):
+# Serve static files and homepage
+@app.route('/')
+def serve_homepage():
     static_folder_path = app.static_folder
     if static_folder_path is None:
-            return "Static folder not configured", 404
-
-    if path != "" and os.path.exists(os.path.join(static_folder_path, path)):
-        return send_from_directory(static_folder_path, path)
+        return "Static folder not configured", 404
+    
+    index_path = os.path.join(static_folder_path, 'index.html')
+    if os.path.exists(index_path):
+        return send_from_directory(static_folder_path, 'index.html')
     else:
-        index_path = os.path.join(static_folder_path, 'index.html')
-        if os.path.exists(index_path):
-            return send_from_directory(static_folder_path, 'index.html')
-        else:
-            return "index.html not found", 404
+        return "index.html not found", 404
+
+# Serve static files
+@app.route('/<path:filename>')
+def serve_static(filename):
+    static_folder_path = app.static_folder
+    if static_folder_path is None:
+        return "Static folder not configured", 404
+    
+    # Only serve actual static files (with extensions)
+    if '.' in filename and os.path.exists(os.path.join(static_folder_path, filename)):
+        return send_from_directory(static_folder_path, filename)
+    
+    # For routes without extensions, return 404 to let blueprints handle them
+    from flask import abort
+    abort(404)
 
 
 if __name__ == '__main__':

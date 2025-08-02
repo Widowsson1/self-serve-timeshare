@@ -434,7 +434,8 @@
                     SelfServe Timeshare
                 </div>
                 <div class="nav-buttons">
-                    <a href="#" class="btn btn-secondary">Login</a>
+                    <a href="/dashboard" id="dashboardLink" class="btn btn-secondary" style="display: none;">My Dashboard</a>
+                    <a href="#" class="btn btn-secondary" id="loginBtn">Login</a>
                     <a href="#pricing" class="btn btn-primary">Get Started</a>
                 </div>
             </div>
@@ -477,67 +478,43 @@
             <p class="pricing-subtitle">Choose the plan that works best for you. No hidden fees, no surprises.</p>
             
             <div class="pricing-cards">
-                <!-- Basic Monthly -->
+                <!-- Starter Plan -->
                 <div class="pricing-card">
-                    <div class="plan-name">Basic Plan</div>
-                    <div class="plan-price">$9.99</div>
+                    <div class="plan-name">Starter Plan</div>
+                    <div class="plan-price">$7.99</div>
                     <div class="plan-period">per month</div>
                     
                     <ul class="plan-features">
                         <li>1 Property Listing</li>
                         <li>Sale OR Rental (choose one)</li>
-                        <li>8 Photos per Listing</li>
-                        <li>Direct Owner-to-Owner Contact</li>
-                        <li>Basic View Analytics</li>
+                        <li>6 Photos per Listing</li>
+                        <li>Direct Owner Contact</li>
+                        <li>Basic Analytics</li>
                         <li>Email Support</li>
                         <li>You Handle Your Own Transactions</li>
                     </ul>
                     
                     <div class="guarantee">
-                        <div class="guarantee-text">14-Day Money-Back Guarantee</div>
+                        <div class="guarantee-text">7-Day Money-Back Guarantee</div>
                     </div>
                     
-                    <a href="#" class="btn btn-primary" style="width: 100%;" onclick="selectPlan('basic_monthly', 9.99)">Start Basic Monthly</a>
+                    <a href="#" class="btn btn-primary" style="width: 100%;" onclick="selectPlan('starter_monthly', 7.99)">Start Starter Plan</a>
                 </div>
 
-                <!-- Basic Yearly (Featured) -->
+                <!-- Basic Plan (Featured) -->
                 <div class="pricing-card featured">
                     <div class="plan-name">Basic Plan</div>
-                    <div class="plan-price">$99.99</div>
-                    <div class="plan-period">per year</div>
-                    <div class="plan-savings">Save 16.7% ($20/year)</div>
-                    
-                    <ul class="plan-features">
-                        <li>1 Property Listing</li>
-                        <li>Sale OR Rental (choose one)</li>
-                        <li>8 Photos per Listing</li>
-                        <li>Direct Owner-to-Owner Contact</li>
-                        <li>Basic View Analytics</li>
-                        <li>Email Support</li>
-                        <li>You Handle Your Own Transactions</li>
-                    </ul>
-                    
-                    <div class="guarantee">
-                        <div class="guarantee-text">30-Day Money-Back Guarantee</div>
-                    </div>
-                    
-                    <a href="#" class="btn btn-primary" style="width: 100%;" onclick="selectPlan('basic_yearly', 99.99)">Start Basic Yearly</a>
-                </div>
-
-                <!-- Premium Monthly -->
-                <div class="pricing-card">
-                    <div class="plan-name">Premium Plan</div>
-                    <div class="plan-price">$19.99</div>
+                    <div class="plan-price">$14.99</div>
                     <div class="plan-period">per month</div>
                     
                     <ul class="plan-features">
-                        <li>3 Property Listings</li>
+                        <li>2 Property Listings</li>
                         <li>Sale AND Rental</li>
-                        <li>15 Photos per Listing</li>
-                        <li>Featured Listing (1/month)</li>
-                        <li>Direct Owner-to-Owner Contact</li>
-                        <li>Detailed Analytics & Insights</li>
+                        <li>10 Photos per Listing</li>
+                        <li>Direct Owner Contact</li>
+                        <li>Advanced Analytics</li>
                         <li>Priority Email Support</li>
+                        <li>Featured Listing Option</li>
                         <li>You Handle Your Own Transactions</li>
                     </ul>
                     
@@ -545,24 +522,52 @@
                         <div class="guarantee-text">14-Day Money-Back Guarantee</div>
                     </div>
                     
-                    <a href="#" class="btn btn-primary" style="width: 100%;" onclick="selectPlan('premium_monthly', 19.99)">Start Premium Monthly</a>
+                    <a href="#" class="btn btn-primary" style="width: 100%;" onclick="selectPlan('basic_monthly', 14.99)">Start Basic Plan</a>
                 </div>
 
-                <!-- Premium Yearly -->
+                <!-- Premium Plan -->
                 <div class="pricing-card">
                     <div class="plan-name">Premium Plan</div>
-                    <div class="plan-price">$199.99</div>
-                    <div class="plan-period">per year</div>
-                    <div class="plan-savings">Save 16.7% ($40/year)</div>
+                    <div class="plan-price">$24.99</div>
+                    <div class="plan-period">per month</div>
                     
                     <ul class="plan-features">
-                        <li>3 Property Listings</li>
+                        <li>5 Property Listings</li>
                         <li>Sale AND Rental</li>
-                        <li>15 Photos per Listing</li>
-                        <li>Featured Listing (1/month)</li>
-                        <li>Direct Owner-to-Owner Contact</li>
-                        <li>Detailed Analytics & Insights</li>
-                        <li>Priority Email Support</li>
+                        <li>20 Photos per Listing</li>
+                        <li>Direct Owner Contact</li>
+                        <li>Premium Analytics & Insights</li>
+                        <li>Phone & Email Support</li>
+                        <li>Featured Listings Included</li>
+                        <li>Advanced Search Placement</li>
+                        <li>You Handle Your Own Transactions</li>
+                    </ul>
+                    
+                    <div class="guarantee">
+                        <div class="guarantee-text">14-Day Money-Back Guarantee</div>
+                    </div>
+                    
+                    <a href="#" class="btn btn-primary" style="width: 100%;" onclick="selectPlan('premium_monthly', 24.99)">Start Premium Plan</a>
+                </div>
+
+                <!-- Unlimited Plan -->
+                <div class="pricing-card" style="border-color: #f59e0b; position: relative;">
+                    <div style="position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: #f59e0b; color: white; padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.8rem; font-weight: 600;">Best Value</div>
+                    <div class="plan-name" style="color: #f59e0b;">Unlimited Plan</div>
+                    <div class="plan-price" style="color: #f59e0b;">$39.99</div>
+                    <div class="plan-period">per month</div>
+                    
+                    <ul class="plan-features">
+                        <li>Unlimited Property Listings</li>
+                        <li>Sale AND Rental</li>
+                        <li>30 Photos per Listing</li>
+                        <li>Direct Owner Contact</li>
+                        <li>Premium Analytics & Insights</li>
+                        <li>Priority Phone & Email Support</li>
+                        <li>Featured Listings Included</li>
+                        <li>Top Search Placement</li>
+                        <li>Bulk Listing Tools</li>
+                        <li>API Access</li>
                         <li>You Handle Your Own Transactions</li>
                     </ul>
                     
@@ -570,7 +575,7 @@
                         <div class="guarantee-text">30-Day Money-Back Guarantee</div>
                     </div>
                     
-                    <a href="#" class="btn btn-primary" style="width: 100%;" onclick="selectPlan('premium_yearly', 199.99)">Start Premium Yearly</a>
+                    <a href="#" class="btn btn-primary" style="width: 100%; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);" onclick="selectPlan('unlimited_monthly', 39.99)">Start Unlimited Plan</a>
                 </div>
             </div>
         </div>
@@ -680,6 +685,26 @@
         }
 
         // Plan selection
+        // Open login modal
+        document.getElementById('loginBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            openModal('loginModal');
+        });
+
+        // Check if user is logged in and show/hide dashboard link
+        document.addEventListener('DOMContentLoaded', function() {
+            const userId = localStorage.getItem('userId');
+            if (userId) {
+                document.getElementById('dashboardLink').style.display = 'inline-block';
+                document.getElementById('loginBtn').textContent = 'Logout';
+                document.getElementById('loginBtn').onclick = function(e) {
+                    e.preventDefault();
+                    localStorage.clear();
+                    window.location.reload();
+                };
+            }
+        });
+
         function selectPlan(planType, price) {
             // Store selected plan in localStorage
             localStorage.setItem('selectedPlan', JSON.stringify({
@@ -699,7 +724,7 @@
             const data = Object.fromEntries(formData);
             
             try {
-                const response = await fetch('/api/auth/login', {
+                const response = await fetch('/auth/login', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -730,7 +755,7 @@
             const data = Object.fromEntries(formData);
             
             try {
-                const response = await fetch('/api/auth/register', {
+                const response = await fetch('/auth/register', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -763,7 +788,7 @@
         // Create membership after registration
         async function createMembership(userId, plan) {
             try {
-                const response = await fetch('/api/memberships', {
+                const response = await fetch('/memberships', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
