@@ -397,7 +397,7 @@
                 <a href="/">Home</a>
                 <a href="/listings">Browse Listings</a>
                 <a href="/dashboard" id="dashboardLink" style="display: none;">My Dashboard</a>
-                <button onclick="showAuthModal()" class="btn btn-secondary btn-small" id="authBtn">Sign Up Free</button>
+                <button onclick="showAuthModal()" class="btn btn-secondary btn-small" id="authBtn">Sign Up</button>
             </nav>
         </div>
     </header>
@@ -713,8 +713,9 @@
 
         async function contactOwner() {
             if (!currentUser) {
-                alert('Please sign up for a free account to contact owners!');
-                showAuthModal();
+                if (confirm('Please sign up for a paid subscription to contact owners! Would you like to go to the signup page?')) {
+                    window.location.href = '/#pricing';
+                }
                 return;
             }
             
@@ -748,8 +749,9 @@
 
         async function toggleFavorite(listingId) {
             if (!currentUser) {
-                alert('Please sign up for a free account to save favorites!');
-                showAuthModal();
+                if (confirm('Please sign up for a paid subscription to save favorites! Would you like to go to the signup page?')) {
+                    window.location.href = '/#pricing';
+                }
                 return;
             }
             
@@ -776,7 +778,9 @@
 
         function showAuthModal() {
             // TODO: Show registration modal for browser accounts
-            alert('Free browser account registration coming soon!');
+            if (confirm('Please sign up for a paid subscription to access all features! Would you like to go to the signup page?')) {
+                window.location.href = '/#pricing';
+            }
         }
 
         function logout() {

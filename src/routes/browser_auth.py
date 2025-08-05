@@ -12,7 +12,7 @@ def validate_email(email):
 
 @browser_auth_bp.route('/api/browser/register', methods=['POST'])
 def register_browser_account():
-    """Register a free browser account for favorites and watchlist"""
+    """Register a browser account for favorites and watchlist"""
     try:
         data = request.get_json()
         if not data:
@@ -55,7 +55,7 @@ def register_browser_account():
             password_hash=generate_password_hash(password),
             first_name=first_name,
             last_name=last_name,
-            account_type='browser'  # Free browser account
+            account_type='browser'  # Browser account for favorites/watchlist
         )
         
         db.session.add(user)

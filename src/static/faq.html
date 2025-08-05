@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ - SelfServe Timeshare | Frequently Asked Questions</title>
+    <meta name="description" content="Get answers to common questions about selling and renting timeshares commission-free on SelfServe Timeshare platform.">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #1f2937;
+            background-color: #f8fafc;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(37, 99, 235, 0.2);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .logo img {
+            height: 40px;
+            width: auto;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: #f59e0b;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #d97706;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .btn-secondary:hover {
+            background: white;
+            color: #2563eb;
+        }
+
+        /* Main Content */
+        main {
+            padding: 3rem 0;
+        }
+
+        .faq-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .faq-header h1 {
+            font-size: 2.5rem;
+            color: #1e40af;
+            margin-bottom: 1rem;
+        }
+
+        .faq-header p {
+            font-size: 1.2rem;
+            color: #6b7280;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .faq-search {
+            max-width: 600px;
+            margin: 0 auto 3rem;
+            position: relative;
+        }
+
+        .faq-search input {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .faq-search input:focus {
+            border-color: #2563eb;
+        }
+
+        .faq-categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .category-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .category-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .category-card h3 {
+            color: #1e40af;
+            margin-bottom: 0.5rem;
+        }
+
+        .faq-content {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .faq-section {
+            border-bottom: 1px solid #e5e7eb;
+            padding: 2rem;
+        }
+
+        .faq-section:last-child {
+            border-bottom: none;
+        }
+
+        .faq-section h2 {
+            color: #1e40af;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .faq-item {
+            margin-bottom: 1.5rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .faq-question {
+            background: #f8fafc;
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            color: #374151;
+            transition: background-color 0.3s ease;
+        }
+
+        .faq-question:hover {
+            background: #f1f5f9;
+        }
+
+        .faq-question.active {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .faq-toggle {
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+
+        .faq-question.active .faq-toggle {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            padding: 0 1.5rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .faq-answer.active {
+            padding: 1.5rem;
+            max-height: 1000px;
+        }
+
+        .faq-answer p {
+            color: #6b7280;
+            line-height: 1.7;
+        }
+
+        .cta-section {
+            background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+            color: white;
+            padding: 3rem 0;
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        .cta-section h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .cta-section p {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav-buttons {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .faq-header h1 {
+                font-size: 2rem;
+            }
+
+            .faq-categories {
+                grid-template-columns: 1fr;
+            }
+
+            .faq-section {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5'/%3E%3C/svg%3E" alt="SelfServe Timeshare Logo">
+                    SelfServe Timeshare
+                </div>
+                <div class="nav-buttons">
+                    <a href="/" class="btn btn-secondary">Home</a>
+                    <a href="/listings" class="btn btn-secondary">Browse Listings</a>
+                    <a href="#" class="btn btn-primary">Get Started</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="faq-header">
+                <h1>Frequently Asked Questions</h1>
+                <p>Find answers to common questions about selling and renting your timeshare commission-free</p>
+            </div>
+
+            <div class="faq-search">
+                <input type="text" id="faqSearch" placeholder="Search for answers..." onkeyup="searchFAQ()">
+            </div>
+
+            <div class="faq-categories">
+                <div class="category-card" onclick="scrollToSection('getting-started')">
+                    <div class="category-icon">🚀</div>
+                    <h3>Getting Started</h3>
+                    <p>Learn the basics of our platform</p>
+                </div>
+                <div class="category-card" onclick="scrollToSection('selling')">
+                    <div class="category-icon">💰</div>
+                    <h3>Selling</h3>
+                    <p>Everything about selling your timeshare</p>
+                </div>
+                <div class="category-card" onclick="scrollToSection('renting')">
+                    <div class="category-icon">🏖️</div>
+                    <h3>Renting</h3>
+                    <p>Rent out your timeshare weeks</p>
+                </div>
+                <div class="category-card" onclick="scrollToSection('pricing')">
+                    <div class="category-icon">💳</div>
+                    <h3>Pricing & Plans</h3>
+                    <p>Understand our subscription options</p>
+                </div>
+            </div>
+
+            <div class="faq-content">
+                <div class="faq-section" id="getting-started">
+                    <h2>🚀 Getting Started</h2>
+                    
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFAQ(this)">
+                            What is SelfServe Timeshare?
+                            <span class="faq-toggle">▼</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>SelfServe Timeshare is a revolutionary commission-free platform that allows timeshare owners to sell or rent their properties directly to buyers and renters. Unlike traditional brokers who charge hefty commissions, our platform lets you keep 100% of your proceeds while providing all the tools you need for a successful transaction.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFAQ(this)">
+                            How is this different from using a timeshare broker or agent?
+                            <span class="faq-toggle">▼</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Traditional timeshare brokers typically charge 15-40% commission on your sale, which can cost you thousands of dollars. With SelfServe Timeshare, you pay only a low monthly subscription fee and keep every dollar from your sale or rental. You maintain complete control over pricing, communication, and the entire transaction process.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFAQ(this)">
+                            Is it really commission-free?
+                            <span class="faq-toggle">▼</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Yes, absolutely! We charge no commissions, no transaction fees, and no hidden costs. You pay only your monthly subscription fee, and everything you earn from selling or renting your timeshare is yours to keep.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFAQ(this)">
+                            How quickly can I list my timeshare?
+                            <span class="faq-toggle">▼</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>You can create and publish your listing within minutes of signing up. Our streamlined process guides you through adding property details, uploading photos, and setting your price. Most listings go live within 24 hours.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-section" id="selling">
+                    <h2>💰 Selling Your Timeshare</h2>
+                    
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFAQ(this)">
+                            What if I've never sold a timeshare before?
+                            <span class="faq-toggle">▼</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Our platform is designed for first-time sellers! We provide step-by-step guidance, best practice tips, and comprehensive support throughout the process. You don't need any special experience - just follow our proven system.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFAQ(this)">
+                            How do I price my timeshare competitively?
+                            <span class="faq-toggle">▼</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Our platform provides market insights and comparable sales data to help you price your timeshare effectively. You can also adjust your pricing anytime based on market response and feedback.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFAQ(this)">
+                            What happens when someone wants to buy my timeshare?
+                            <span class="faq-toggle">▼</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Interested buyers contact you directly through our secure messaging system. You communicate directly with them, negotiate terms, and handle the transaction. We provide guidance and resources, but you maintain complete control over the process.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFAQ(this)">
+                            Do you handle the legal paperwork and closing?
+                            <span class="faq-toggle">▼</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>While we provide resources and guidance on the closing process, you're responsible for handling the legal aspects of the transaction. We recommend working with a qualified real estate attorney or title company for the closing, which is standard practice for any real estate transaction.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-section" id="renting">
+                    <h2>🏖️ Renting Your Timeshare</h2>
+                    
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFAQ(this)">
+                            Can I rent my timeshare while also trying to sell it?
+                            <span class="faq-toggle">▼</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Yes! Our Basic plan and above allow you to list for both sale AND rental simultaneously. This maximizes your opportunities and helps generate income while you're marketing for a sale.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFAQ(this)">
+                            How do rental payments work?
+                            <span class="faq-toggle">▼</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Renters pay you directly. We don't handle payments or take any percentage of your rental income. You arrange payment terms directly with your renters, giving you complete flexibility and control.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFAQ(this)">
+                            What about security deposits and rental agreements?
+                            <span class="faq-toggle">▼</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>You handle all rental terms, deposits, and agreements directly with renters. We provide templates and guidance, but you maintain control over your rental terms and policies.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-section" id="pricing">
+                    <h2>💳 Pricing and Plans</h2>
+                    
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFAQ(this)">
+                            Which plan is right for me?
+                            <span class="faq-toggle">▼</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p><strong>Starter ($7.99/month):</strong> Perfect for selling OR renting one property<br>
+                            <strong>Basic ($14.99/month):</strong> Best for selling AND renting, or multiple properties<br>
+                            <strong>Premium ($24.99/month):</strong> Ideal for serious sellers wanting maximum exposure<br>
+                            <strong>Unlimited ($39.99/month):</strong> Perfect for investors or multiple property owners</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFAQ(this)">
+                            Can I change plans anytime?
+                            <span class="faq-toggle">▼</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Yes, you can upgrade or downgrade your plan anytime. Changes take effect at your next billing cycle, and you'll have immediate access to new features when upgrading.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFAQ(this)">
+                            Is there a contract or long-term commitment?
+                            <span class="faq-toggle">▼</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>No contracts required! All plans are month-to-month, and you can cancel anytime. We also offer money-back guarantees ranging from 7 to 30 days depending on your plan.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div class="cta-section">
+        <div class="container">
+            <h2>Ready to Get Started?</h2>
+            <p>Join thousands of timeshare owners who are selling and renting commission-free</p>
+            <a href="#" class="btn btn-primary">Get Started Risk-Free</a>
+        </div>
+    </div>
+
+    <script>
+        function toggleFAQ(element) {
+            const answer = element.nextElementSibling;
+            const isActive = element.classList.contains('active');
+            
+            // Close all other FAQ items
+            document.querySelectorAll('.faq-question.active').forEach(item => {
+                item.classList.remove('active');
+                item.nextElementSibling.classList.remove('active');
+            });
+            
+            // Toggle current item
+            if (!isActive) {
+                element.classList.add('active');
+                answer.classList.add('active');
+            }
+        }
+
+        function scrollToSection(sectionId) {
+            document.getElementById(sectionId).scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+
+        function searchFAQ() {
+            const searchTerm = document.getElementById('faqSearch').value.toLowerCase();
+            const faqItems = document.querySelectorAll('.faq-item');
+            
+            faqItems.forEach(item => {
+                const question = item.querySelector('.faq-question').textContent.toLowerCase();
+                const answer = item.querySelector('.faq-answer').textContent.toLowerCase();
+                
+                if (question.includes(searchTerm) || answer.includes(searchTerm)) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = searchTerm === '' ? 'block' : 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>
+

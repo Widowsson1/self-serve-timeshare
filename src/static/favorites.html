@@ -360,7 +360,7 @@
                 <a href="/listings">Browse Listings</a>
                 <a href="/favorites">My Favorites</a>
                 <a href="/dashboard" id="dashboardLink" style="display: none;">My Dashboard</a>
-                <button onclick="showAuthModal()" class="btn btn-secondary btn-small" id="authBtn">Sign Up Free</button>
+                <button onclick="showAuthModal()" class="btn btn-secondary btn-small" id="authBtn">Sign Up</button>
             </nav>
         </div>
     </header>
@@ -601,9 +601,9 @@
                 <div class="auth-prompt">
                     <div class="auth-prompt-icon">❤️</div>
                     <h3>Sign Up to Save Favorites</h3>
-                    <p>Create a free browser account to save your favorite timeshare listings and keep track of properties you're interested in.</p>
+                    <p>Sign up for a paid subscription to save your favorite timeshare listings and keep track of properties you're interested in.</p>
                     <button onclick="showAuthModal()" class="btn btn-primary">
-                        Sign Up Free - It's Quick!
+                        Sign Up for Subscription
                     </button>
                     <p style="margin-top: 1rem; font-size: 0.9rem;">
                         Already have an account? <a href="#" onclick="showLoginModal()" style="color: #0f766e;">Sign In</a>
@@ -614,7 +614,9 @@
 
         function showAuthModal() {
             // TODO: Implement browser account registration modal
-            alert('Free browser account registration coming soon!');
+            if (confirm('Please sign up for a paid subscription to access favorites! Would you like to go to the signup page?')) {
+                window.location.href = '/#pricing';
+            }
         }
 
         function showLoginModal() {

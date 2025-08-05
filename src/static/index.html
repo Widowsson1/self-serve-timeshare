@@ -442,6 +442,8 @@
                 </div>
                 <div class="nav-buttons">
                     <a href="/dashboard" id="dashboardLink" class="btn btn-secondary" style="display: none;">My Dashboard</a>
+                    <a href="/listings" class="btn btn-secondary">Browse Listings</a>
+                    <a href="/faq.html" class="btn btn-secondary">FAQ</a>
                     <a href="#" class="btn btn-secondary" id="loginBtn">Login</a>
                     <a href="#pricing" class="btn btn-primary">Get Started</a>
                 </div>
@@ -773,16 +775,19 @@
                 const result = await response.json();
                 
                 if (response.ok) {
-                    alert('Registration successful!');
-                    localStorage.setItem('user', JSON.stringify(result));
+                    // Store user data temporarily
+                    localStorage.setItem('tempUser', JSON.stringify(result));
                     closeModal('registerModal');
                     
                     // Check if user selected a plan
                     const selectedPlan = localStorage.getItem('selectedPlan');
                     if (selectedPlan) {
                         const plan = JSON.parse(selectedPlan);
-                        // Redirect to payment or membership creation
-                        createMembership(result.id, plan);
+                        // Redirect to Stripe payment instead of creating membership
+                        redirectToStripePayment(result.id, plan);
+                    } else {
+                        alert('Please select a plan to continue.');
+                        window.location.href = '#pricing';
                     }
                 } else {
                     alert('Registration failed: ' + result.error);
@@ -792,33 +797,36 @@
             }
         });
 
-        // Create membership after registration
-        async function createMembership(userId, plan) {
+        // Redirect to Stripe payment
+        async function redirectToStripePayment(userId, plan) {
             try {
-                const response = await fetch('/memberships', {
+                // Create Stripe checkout session
+                const response = await fetch('/create-checkout-session', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
                         user_id: userId,
-                        membership_type: plan.type,
-                        payment_amount: plan.price,
-                        payment_method: 'credit_card'
+                        plan_type: plan.type,
+                        price: plan.price
                     })
                 });
                 
                 const result = await response.json();
                 
-                if (response.ok) {
-                    alert('Membership created successfully! Welcome to SelfServe Timeshare!');
-                    localStorage.removeItem('selectedPlan');
-                    // Redirect to dashboard
+                if (response.ok && result.checkout_url) {
+                    // Redirect to Stripe checkout
+                    window.location.href = result.checkout_url;
                 } else {
-                    alert('Membership creation failed: ' + result.error);
+                    alert('Payment setup failed: ' + (result.error || 'Unknown error'));
+                    // Fallback: show payment required message
+                    alert('Payment is required to complete your subscription. Please contact support.');
                 }
             } catch (error) {
-                alert('Membership creation failed: ' + error.message);
+                alert('Payment setup failed: ' + error.message);
+                // Fallback: show payment required message
+                alert('Payment is required to complete your subscription. Please contact support.');
             }
         }
 
@@ -835,6 +843,9 @@
             });
         });
     </script>
+    
+    <!-- Chatbot Script -->
+    <script src="chatbot.js"></script>
 </body>
 </html>
 
