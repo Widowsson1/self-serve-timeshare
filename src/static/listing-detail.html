@@ -629,16 +629,18 @@
                                 <button onclick="toggleFavorite(${listing.id})" class="favorite-btn" id="favoriteBtn">
                                     ❤️ Add to Favorites
                                 </button>
+                                <button class="btn btn-primary" onclick="contactOwner()">
+                                    📧 Contact Owner
+                                </button>
                             ` : `
-                                <button onclick="showAuthModal()" class="favorite-btn">
-                                    ❤️ Sign Up to Save Favorites
+                                <button class="favorite-btn" onclick="requireRegistration('favorite')">
+                                    ❤️ Sign Up Free to Save Favorites
+                                </button>
+                                <button class="btn btn-primary" onclick="requireRegistration('contact')">
+                                    📧 Sign Up Free to Contact Owner
                                 </button>
                             `}
-                            
-                            <button onclick="contactOwner()" class="btn btn-primary">
-                                📧 Contact Owner
-                            </button>
-                            <button onclick="shareListing()" class="btn btn-secondary">
+                            <button class="btn btn-secondary" onclick="shareListing()">
                                 🔗 Share Listing
                             </button>
                         </div>
@@ -663,8 +665,8 @@
                                     <span>Responds within 24 hours</span>
                                 </div>
                             </div>
-                            <button onclick="contactOwner()" class="btn btn-primary">
-                                Send Message
+                            <button onclick="currentUser ? contactOwner() : requireRegistration('contact')" class="btn btn-primary">
+                                ${currentUser ? 'Send Message' : 'Sign Up Free to Send Message'}
                             </button>
                         </div>
                     </div>
@@ -747,16 +749,39 @@
             }
         }
 
-        async function toggleFavorite(listingId) {
+        function requireRegistration(action) {
+            let message = '';
+            if (action === 'contact') {
+                message = 'Sign up for FREE to contact property owners and send messages!';
+            } else if (action === 'favorite') {
+                message = 'Sign up for FREE to save your favorite listings!';
+            } else {
+                message = 'Sign up for FREE to access all browsing features!';
+            }
+            
+            if (confirm(`${message}\n\nFree registration includes:\n✅ Contact property owners\n✅ Save favorite listings\n✅ Track your inquiries\n\nTo LIST properties, upgrade to a paid plan.\n\nWould you like to sign up now?`)) {
+                window.location.href = '/#pricing';
+            }
+        }
+
+        async function contactOwner() {
             if (!currentUser) {
-                if (confirm('Please sign up for a paid subscription to save favorites! Would you like to go to the signup page?')) {
-                    window.location.href = '/#pricing';
-                }
+                requireRegistration('contact');
                 return;
             }
             
-            // TODO: Implement favorite functionality
-            alert('Favorites feature coming soon!');
+            // TODO: Implement contact functionality for registered users
+            alert('Contact form coming soon! For now, registered users can contact owners directly.');
+        }
+
+        async function toggleFavorite(listingId) {
+            if (!currentUser) {
+                requireRegistration('favorite');
+                return;
+            }
+            
+            // TODO: Implement favorite functionality for registered users
+            alert('Favorites feature coming soon for registered users!');
         }
 
         function shareListing() {
@@ -777,10 +802,7 @@
         }
 
         function showAuthModal() {
-            // TODO: Show registration modal for browser accounts
-            if (confirm('Please sign up for a paid subscription to access all features! Would you like to go to the signup page?')) {
-                window.location.href = '/#pricing';
-            }
+            requireRegistration('general');
         }
 
         function logout() {

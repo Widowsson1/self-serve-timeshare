@@ -537,6 +537,19 @@
             <h2>Commission-Free Timeshare Selling Plans</h2>
             <p class="pricing-subtitle">Choose your subscription plan and start selling without agent fees. No hidden costs, no commission charges.</p>
             
+            <!-- Free Browser Registration -->
+            <div style="text-align: center; margin-bottom: 3rem; padding: 2rem; background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); border-radius: 12px; border: 2px solid #0ea5e9;">
+                <h3 style="color: #0369a1; margin-bottom: 1rem; font-size: 1.5rem;">🆓 Free Browser Account</h3>
+                <p style="color: #0c4a6e; margin-bottom: 1.5rem; font-size: 1.1rem;">Browse all listings, contact property owners, and save favorites - completely FREE!</p>
+                <div style="display: flex; justify-content: center; gap: 2rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
+                    <div style="color: #0c4a6e;">✅ Browse all property listings</div>
+                    <div style="color: #0c4a6e;">✅ Contact property owners</div>
+                    <div style="color: #0c4a6e;">✅ Save favorite listings</div>
+                </div>
+                <p style="color: #64748b; font-size: 0.9rem; margin-bottom: 1.5rem;">To LIST your own properties for sale or rent, choose a paid plan below.</p>
+                <a href="#" class="btn" style="background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%); color: white; padding: 1rem 2rem; font-size: 1.1rem;" onclick="selectPlan('free_browser', 0)">Sign Up FREE to Browse</a>
+            </div>
+            
             <div class="pricing-cards">
                 <!-- Starter Plan -->
                 <div class="pricing-card">
@@ -766,7 +779,20 @@
         });
 
         function selectPlan(planType, price) {
-            // Store selected plan in localStorage
+            // Handle free browser registration
+            if (planType === 'free_browser') {
+                // Store free plan selection
+                localStorage.setItem('selectedPlan', JSON.stringify({
+                    type: 'free_browser',
+                    price: 0
+                }));
+                
+                // Open registration modal for free account
+                openModal('registerModal');
+                return;
+            }
+            
+            // Store selected paid plan in localStorage
             localStorage.setItem('selectedPlan', JSON.stringify({
                 type: planType,
                 price: price
@@ -834,7 +860,20 @@
                     const selectedPlan = localStorage.getItem('selectedPlan');
                     if (selectedPlan) {
                         const plan = JSON.parse(selectedPlan);
-                        // Redirect to Stripe payment instead of creating membership
+                        
+                        // Handle free browser account
+                        if (plan.type === 'free_browser') {
+                            // Complete free registration
+                            localStorage.setItem('user', JSON.stringify(result));
+                            localStorage.removeItem('tempUser');
+                            localStorage.removeItem('selectedPlan');
+                            
+                            alert('🎉 Free account created successfully!\n\nYou can now:\n✅ Browse all property listings\n✅ Contact property owners\n✅ Save favorite listings\n\nTo list your own properties, upgrade to a paid plan anytime.');
+                            window.location.href = '/listings';
+                            return;
+                        }
+                        
+                        // Redirect to Stripe payment for paid plans
                         redirectToStripePayment(result.id, plan);
                     } else {
                         alert('Please select a plan to continue.');
