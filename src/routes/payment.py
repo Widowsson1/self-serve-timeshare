@@ -61,10 +61,14 @@ def create_checkout_session():
         
         # Define price IDs from Stripe dashboard
         price_ids = {
+            'starter_monthly': 'price_1RrT7TEQGduXa1ejI6QlMX5K',
+            'starter_yearly': 'price_1RrT5dEQGduXa1ejOeOK7APR',
             'basic_monthly': 'price_1RrNMgEQGduXa1ejMBFMZ9r2',
-            'basic_yearly': 'price_1RrNOaEQGduXa1eja9bkI7XM',
+            'basic_yearly': 'price_1RrNMgEQGduXa1ejMBFMZ9r2',
             'premium_monthly': 'price_1RrNQ5EQGduXa1ejvFm1BRZW',
-            'premium_yearly': 'price_1RrNQuEQGduXa1ejxTleWdfR'
+            'premium_yearly': 'price_1RrNQuEQGduXa1ejxTleWdfR',
+            'unlimited_monthly': 'price_1RrT8QEQGduXa1ejxd6G9k8C',
+            'unlimited_yearly': 'price_1RrT9BEQGduXa1ejdGgdltCw'
         }
         
         price_key = f"{plan_type}_{billing_cycle}"
