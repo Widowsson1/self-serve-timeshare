@@ -78,7 +78,7 @@
 
         /* Header */
         header {
-            background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+            background: linear-gradient(135deg, #2563eb 0%, #1e40af 100% );
             color: white;
             padding: 1rem 0;
             box-shadow: 0 2px 10px rgba(37, 99, 235, 0.2);
@@ -155,63 +155,114 @@
 
         /* Hero Section */
         .hero {
-            background: linear-gradient(135deg, rgba(37, 99, 235, 0.9) 0%, rgba(30, 64, 175, 0.9) 100%), 
-                        url('hero-bg.jpg') center/cover;
+            background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
             color: white;
             padding: 4rem 0;
             text-align: center;
-            position: relative;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, rgba(37, 99, 235, 0.8) 0%, rgba(30, 64, 175, 0.8) 100%);
-            z-index: 1;
-        }
-
-        .hero .container {
-            position: relative;
-            z-index: 2;
         }
 
         .hero h1 {
             font-size: 3rem;
             margin-bottom: 1rem;
             font-weight: 700;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
         }
 
         .hero p {
-            font-size: 1.2rem;
+            font-size: 1.25rem;
             margin-bottom: 2rem;
-            opacity: 0.95;
-            max-width: 600px;
+            opacity: 0.9;
+            max-width: 800px;
             margin-left: auto;
             margin-right: auto;
         }
 
-        .trust-badges {
-            display: flex;
-            justify-content: center;
+        .hero-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 2rem;
-            margin-top: 2rem;
-            flex-wrap: wrap;
+            margin-top: 3rem;
         }
 
-        .trust-badge {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            background: rgba(255,255,255,0.15);
-            padding: 0.75rem 1.25rem;
-            border-radius: 25px;
+        .hero-feature {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 12px;
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .hero-feature h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* SMS Signup Section - A2P COMPLIANCE */
+        .sms-signup {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 3rem 0;
+            margin: 2rem 0;
+        }
+
+        .sms-signup h2 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .sms-signup p {
+            text-align: center;
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .sms-form {
+            max-width: 600px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .consent-checkbox {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            margin: 1.5rem 0;
+        }
+
+        .consent-checkbox input[type="checkbox"] {
+            width: auto;
+            margin-top: 0.25rem;
+        }
+
+        .consent-text {
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .consent-text a {
+            color: #fbbf24;
+            text-decoration: underline;
         }
 
         /* Pricing Section */
@@ -234,145 +285,164 @@
             margin-bottom: 3rem;
         }
 
-        .pricing-cards {
+        .free-account {
+            background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+
+        .free-account h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .free-features {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1.5rem;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
             margin-top: 2rem;
         }
 
         .pricing-card {
             background: white;
-            border-radius: 16px;
-            padding: 2rem;
-            box-shadow: 0 10px 30px rgba(37, 99, 235, 0.1);
             border: 2px solid #e5e7eb;
-            transition: all 0.3s ease;
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
             position: relative;
+            transition: all 0.3s ease;
         }
 
         .pricing-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(37, 99, 235, 0.15);
-            border-color: #2563eb;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         }
 
-        .pricing-card.featured {
+        .pricing-card.popular {
             border-color: #10b981;
             transform: scale(1.05);
-            box-shadow: 0 15px 35px rgba(16, 185, 129, 0.15);
         }
 
-        .pricing-card.featured::before {
-            content: "Most Popular";
-            position: absolute;
-            top: -10px;
-            left: 50%;
-            transform: translateX(-50%);
+        .popular-badge {
             background: #10b981;
             color: white;
             padding: 0.5rem 1rem;
             border-radius: 20px;
             font-size: 0.8rem;
             font-weight: 600;
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
         }
 
-        .plan-name {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            color: #1f2937;
-        }
-
-        .plan-price {
+        .price {
             font-size: 2.5rem;
-            font-weight: 800;
+            font-weight: 700;
             color: #2563eb;
-            margin-bottom: 0.5rem;
+            margin: 1rem 0;
         }
 
-        .plan-period {
+        .price-period {
+            font-size: 1rem;
             color: #6b7280;
-            margin-bottom: 1rem;
         }
 
-        .plan-savings {
-            background: #dcfce7;
-            color: #166534;
-            padding: 0.25rem 0.75rem;
-            border-radius: 12px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            display: inline-block;
-            margin-bottom: 1.5rem;
-        }
-
-        .plan-features {
+        .features {
             list-style: none;
-            margin-bottom: 2rem;
+            margin: 2rem 0;
         }
 
-        .plan-features li {
+        .features li {
             padding: 0.5rem 0;
             display: flex;
             align-items: center;
             gap: 0.5rem;
         }
 
-        .plan-features li::before {
-            content: "✓";
-            color: #10b981;
-            font-weight: bold;
-            font-size: 1.2rem;
+        .features li::before {
+            content: "✅";
+            font-size: 1rem;
         }
 
-
-
-        /* Features Section */
-        .features {
+        /* Why Choose Section */
+        .why-choose {
             padding: 4rem 0;
             background: #f8fafc;
         }
 
-        .features h2 {
+        .why-choose h2 {
             text-align: center;
             font-size: 2.5rem;
             margin-bottom: 3rem;
             color: #1f2937;
         }
 
-        .features-grid {
+        .benefits-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 2rem;
         }
 
-        .feature-card {
+        .benefit-card {
             background: white;
             padding: 2rem;
             border-radius: 12px;
             text-align: center;
-            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.08);
-            border: 1px solid #e5e7eb;
-            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
         }
 
-        .feature-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(37, 99, 235, 0.12);
-            border-color: #2563eb;
-        }
-
-        .feature-icon {
+        .benefit-icon {
             font-size: 3rem;
             margin-bottom: 1rem;
         }
 
-        .feature-title {
-            font-size: 1.3rem;
-            font-weight: 600;
+        .benefit-card h3 {
+            font-size: 1.25rem;
             margin-bottom: 1rem;
             color: #1f2937;
+        }
+
+        /* Privacy Policy Section - A2P COMPLIANCE */
+        .privacy-section {
+            background: #f3f4f6;
+            padding: 3rem 0;
+            margin-top: 2rem;
+        }
+
+        .privacy-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .privacy-content h2 {
+            color: #1f2937;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .privacy-content h3 {
+            color: #374151;
+            margin: 1.5rem 0 1rem 0;
+        }
+
+        .privacy-content p, .privacy-content ul {
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .privacy-content ul {
+            padding-left: 2rem;
         }
 
         /* Footer */
@@ -383,89 +453,53 @@
             text-align: center;
         }
 
-        /* Responsive */
-        @media (max-width: 1024px) and (min-width: 769px) {
-            .pricing-cards {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 1rem;
-            }
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1rem;
         }
 
+        .footer-links a {
+            color: #9ca3af;
+            text-decoration: none;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        /* Mobile Responsive */
         @media (max-width: 768px) {
             .hero h1 {
                 font-size: 2rem;
             }
-            
-            .pricing-cards {
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav-buttons {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .pricing-grid {
                 grid-template-columns: 1fr;
             }
-            
-            .pricing-card.featured {
+
+            .pricing-card.popular {
                 transform: none;
             }
-            
-            .trust-badges {
-                flex-direction: column;
-                align-items: center;
+
+            .sms-form {
+                margin: 0 1rem;
             }
-        }
-
-        /* Modal Styles */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.5);
-        }
-
-        .modal-content {
-            background-color: white;
-            margin: 5% auto;
-            padding: 2rem;
-            border-radius: 12px;
-            width: 90%;
-            max-width: 500px;
-            position: relative;
-        }
-
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .close:hover {
-            color: black;
-        }
-
-        .form-group {
-            margin-bottom: 1rem;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid #d1d5db;
-            border-radius: 6px;
-            font-size: 1rem;
-        }
-
-        .form-group input:focus {
-            outline: none;
-            border-color: #4f46e5;
-            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
         }
     </style>
 </head>
@@ -476,15 +510,14 @@
             <div class="header-content">
                 <div class="logo">
                     <img src="logo_selfservetimeshare.png" alt="SelfServe Timeshare Logo">
-                    SelfServe Timeshare
+                    <span>SelfServe Timeshare</span>
                 </div>
-                <div class="nav-buttons">
-                    <a href="/dashboard" id="dashboardLink" class="btn btn-secondary" style="display: none;">My Dashboard</a>
+                <nav class="nav-buttons">
                     <a href="/listings" class="btn btn-secondary">Browse Listings</a>
-                    <a href="/faq.html" class="btn btn-secondary">FAQ</a>
-                    <a href="#" class="btn btn-secondary" id="loginBtn">Login</a>
+                    <a href="#faq" class="btn btn-secondary">FAQ</a>
+                    <a href="/login" class="btn btn-secondary">Login</a>
                     <a href="#pricing" class="btn btn-primary">Get Started</a>
-                </div>
+                </nav>
             </div>
         </div>
     </header>
@@ -494,169 +527,217 @@
         <div class="container">
             <h1>Sell Your Timeshare Commission-Free - No Agent Fees</h1>
             <p>The revolutionary autonomous platform where timeshare owners connect directly with buyers and renters. List your timeshare, control your sale, and keep 100% of proceeds without paying commission fees to agents or brokers.</p>
-            <p style="font-size: 1rem; margin-bottom: 1.5rem; opacity: 0.9; color: #fef3c7;"><strong>Important Note for Owners:</strong> Please ensure you understand and comply with your specific resort or timeshare association's rules and processes regarding renting or selling your timeshare. This platform facilitates direct connections, but it is your responsibility to adhere to your resort's policies.</p>
-            <a href="#pricing" class="btn btn-primary" style="font-size: 1.1rem; padding: 1rem 2rem;">View Simple Pricing</a>
             
-            <div class="trust-badges">
-                <div class="trust-badge">
-                    <span>🔒</span>
-                    <span>Secure Platform</span>
+            <div class="important-note" style="background: rgba(255, 255, 255, 0.1); padding: 1.5rem; border-radius: 12px; margin: 2rem auto; max-width: 800px; backdrop-filter: blur(10px);">
+                <p><strong>Important Note for Owners:</strong> Please ensure you understand and comply with your specific resort or timeshare association's rules and processes regarding renting or selling your timeshare. This platform facilitates direct connections, but it is your responsibility to adhere to your resort's policies.</p>
+            </div>
+
+            <a href="#pricing" class="btn btn-primary" style="font-size: 1.1rem; padding: 1rem 2rem;">View Simple Pricing</a>
+
+            <div class="hero-features">
+                <div class="hero-feature">
+                    <h3>🔒 Secure Platform</h3>
                 </div>
-                <div class="trust-badge">
-                    <span>💰</span>
-                    <span>No Commissions</span>
+                <div class="hero-feature">
+                    <h3>💰 No Commissions</h3>
                 </div>
-                <div class="trust-badge">
-                    <span>🤝</span>
-                    <span>Direct Owner Contact</span>
+                <div class="hero-feature">
+                    <h3>🤝 Direct Owner Contact</h3>
                 </div>
-                <div class="trust-badge">
-                    <span>✅</span>
-                    <span>You Handle Transactions</span>
+                <div class="hero-feature">
+                    <h3>✅ You Handle Transactions</h3>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SMS Marketing Signup Section - A2P COMPLIANCE -->
+    <section class="sms-signup" id="sms-signup">
+        <div class="container">
+            <h2>📱 SMS Marketing Updates</h2>
+            <p>Get exclusive deals and timeshare opportunities sent directly to your phone!</p>
+            
+            <form class="sms-form" id="smsSignupForm">
+                <div class="form-group">
+                    <label for="email">Email Address *</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="phone">Phone Number *</label>
+                    <input type="tel" id="phone" name="phone" required placeholder="(555) 123-4567">
+                </div>
+                
+                <div class="consent-checkbox">
+                    <input type="checkbox" id="smsConsent" name="smsConsent" required>
+                    <label for="smsConsent" class="consent-text">
+                        I agree to receive marketing text messages from SelfServe Timeshare about commission-free timeshare services, exclusive deals, property listings, and platform updates. Message frequency varies. Message and data rates may apply. Reply STOP to opt out. <a href="/privacy-policy">Privacy Policy</a>
+                    </label>
+                </div>
+                
+                <button type="submit" class="btn btn-success" style="width: 100%; font-size: 1.1rem;">
+                    Sign Up for SMS Updates
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Free Account Section -->
+    <section class="pricing">
+        <div class="container">
+            <div class="free-account">
+                <h3>🆓 Sign Up FREE</h3>
+                <p>Create your free account to browse listings and connect with timeshare owners</p>
+                <div class="free-features">
+                    <div>✅ Browse all listings</div>
+                    <div>✅ Contact owners directly</div>
+                    <div>✅ No hidden fees</div>
+                    <div>✅ Secure messaging</div>
+                </div>
+                <a href="/signup" class="btn btn-primary" style="margin-top: 1rem;">Sign Up FREE</a>
             </div>
         </div>
     </section>
 
     <!-- Pricing Section -->
-    <section id="pricing" class="pricing">
+    <section class="pricing" id="pricing">
         <div class="container">
-            <h2>Commission-Free Timeshare Selling Plans</h2>
-            <p class="pricing-subtitle">Choose your subscription plan and start selling without agent fees. No hidden costs, no commission charges.</p>
+            <h2>Simple Pricing for Timeshare Owners</h2>
+            <p class="pricing-subtitle">Choose the plan that works best for your timeshare selling needs</p>
             
-            <!-- Free Browser Registration -->
-            <div style="text-align: center; margin-bottom: 3rem; padding: 2rem; background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); border-radius: 12px; border: 2px solid #0ea5e9;">
-                <h3 style="color: #0369a1; margin-bottom: 1rem; font-size: 1.5rem;">🆓 Free Browser Account</h3>
-                <p style="color: #0c4a6e; margin-bottom: 1.5rem; font-size: 1.1rem;">Browse all listings, contact property owners, and save favorites - completely FREE!</p>
-                <div style="display: flex; justify-content: center; gap: 2rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
-                    <div style="color: #0c4a6e;">✅ Browse all property listings</div>
-                    <div style="color: #0c4a6e;">✅ Contact property owners</div>
-                    <div style="color: #0c4a6e;">✅ Save favorite listings</div>
-                </div>
-                <p style="color: #64748b; font-size: 0.9rem; margin-bottom: 1.5rem;">To LIST your own properties for sale or rent, choose a paid plan below.</p>
-                <a href="#" class="btn" style="background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%); color: white; padding: 1rem 2rem; font-size: 1.1rem;" onclick="selectPlan('free_browser', 0)">Sign Up FREE to Browse</a>
-            </div>
-            
-            <div class="pricing-cards">
-                <!-- Starter Plan -->
+            <div class="pricing-grid">
                 <div class="pricing-card">
-                    <div class="plan-name">Starter Plan</div>
-                    <div class="plan-price">$7.99</div>
-                    <div class="plan-period">per month</div>
-                    
-                    <ul class="plan-features">
-                        <li>1 Property Listing</li>
-                        <li>Sale OR Rental (choose one)</li>
-                        <li>6 Photos per Listing</li>
-                        <li>Direct Owner Contact</li>
-                        <li>Basic Analytics</li>
-                        <li>Email Support</li>
-                        <li>You Handle Your Own Transactions</li>
+                    <h3>Starter</h3>
+                    <div class="price">$29<span class="price-period">/month</span></div>
+                    <ul class="features">
+                        <li>List up to 2 timeshares</li>
+                        <li>Basic listing features</li>
+                        <li>Direct buyer contact</li>
+                        <li>Email support</li>
                     </ul>
-                    
-
-                    
-                    <a href="#" class="btn btn-primary" style="width: 100%;" onclick="selectPlan('starter_monthly', 7.99)">Start Starter Plan</a>
+                    <a href="/signup?plan=starter" class="btn btn-primary">Choose Starter</a>
                 </div>
 
-                <!-- Basic Plan (Featured) -->
-                <div class="pricing-card featured">
-                    <div class="plan-name">Basic Plan</div>
-                    <div class="plan-price">$14.99</div>
-                    <div class="plan-period">per month</div>
-                    
-                    <ul class="plan-features">
-                        <li>2 Property Listings</li>
-                        <li>Sale AND Rental</li>
-                        <li>10 Photos per Listing</li>
-                        <li>Direct Owner Contact</li>
-                        <li>Advanced Analytics</li>
-                        <li>Priority Email Support</li>
-                        <li>Featured Listing Option</li>
-                        <li>You Handle Your Own Transactions</li>
+                <div class="pricing-card popular">
+                    <div class="popular-badge">Most Popular</div>
+                    <h3>Basic</h3>
+                    <div class="price">$49<span class="price-period">/month</span></div>
+                    <ul class="features">
+                        <li>List up to 5 timeshares</li>
+                        <li>Enhanced listing features</li>
+                        <li>Priority in search results</li>
+                        <li>Direct buyer contact</li>
+                        <li>Phone & email support</li>
                     </ul>
-                    
-
-                    
-                    <a href="#" class="btn btn-primary" style="width: 100%;" onclick="selectPlan('basic_monthly', 14.99)">Start Basic Plan</a>
+                    <a href="/signup?plan=basic" class="btn btn-primary">Choose Basic</a>
                 </div>
 
-                <!-- Premium Plan -->
                 <div class="pricing-card">
-                    <div class="plan-name">Premium Plan</div>
-                    <div class="plan-price">$24.99</div>
-                    <div class="plan-period">per month</div>
-                    
-                    <ul class="plan-features">
-                        <li>5 Property Listings</li>
-                        <li>Sale AND Rental</li>
-                        <li>20 Photos per Listing</li>
-                        <li>Direct Owner Contact</li>
-                        <li>Premium Analytics & Insights</li>
-                        <li>Phone & Email Support</li>
-                        <li>Featured Listings Included</li>
-                        <li>Advanced Search Placement</li>
-                        <li>You Handle Your Own Transactions</li>
+                    <h3>Premium</h3>
+                    <div class="price">$79<span class="price-period">/month</span></div>
+                    <ul class="features">
+                        <li>List up to 10 timeshares</li>
+                        <li>Premium listing features</li>
+                        <li>Featured listings</li>
+                        <li>Advanced analytics</li>
+                        <li>Priority support</li>
                     </ul>
-                    
-
-                    
-                    <a href="#" class="btn btn-primary" style="width: 100%;" onclick="selectPlan('premium_monthly', 24.99)">Start Premium Plan</a>
+                    <a href="/signup?plan=premium" class="btn btn-primary">Choose Premium</a>
                 </div>
 
-                <!-- Unlimited Plan -->
-                <div class="pricing-card" style="border-color: #f59e0b; position: relative;">
-                    <div style="position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: #f59e0b; color: white; padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.8rem; font-weight: 600;">Best Value</div>
-                    <div class="plan-name" style="color: #f59e0b;">Unlimited Plan</div>
-                    <div class="plan-price" style="color: #f59e0b;">$39.99</div>
-                    <div class="plan-period">per month</div>
-                    
-                    <ul class="plan-features">
-                        <li>Unlimited Property Listings</li>
-                        <li>Sale AND Rental</li>
-                        <li>30 Photos per Listing</li>
-                        <li>Direct Owner Contact</li>
-                        <li>Premium Analytics & Insights</li>
-                        <li>Priority Phone & Email Support</li>
-                        <li>Featured Listings Included</li>
-                        <li>Top Search Placement</li>
-                        <li>Bulk Listing Tools</li>
-                        <li>API Access</li>
-                        <li>You Handle Your Own Transactions</li>
+                <div class="pricing-card">
+                    <h3>Unlimited</h3>
+                    <div class="price">$149<span class="price-period">/month</span></div>
+                    <ul class="features">
+                        <li>Unlimited listings</li>
+                        <li>All premium features</li>
+                        <li>Dedicated account manager</li>
+                        <li>Custom marketing tools</li>
+                        <li>24/7 priority support</li>
                     </ul>
-                    
-
-                    
-                    <a href="#" class="btn btn-primary" style="width: 100%; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);" onclick="selectPlan('unlimited_monthly', 39.99)">Start Unlimited Plan</a>
+                    <a href="/signup?plan=unlimited" class="btn btn-primary">Choose Unlimited</a>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Features Section -->
-    <section class="features">
+    <!-- Why Choose Section -->
+    <section class="why-choose">
         <div class="container">
-            <h2>Why Choose Self Serve Timeshare Over Traditional Brokers?</h2>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">🏠</div>
-                    <div class="feature-title">Pure Listing Platform</div>
-                    <p>We provide the platform, you handle the transactions. No middleman involvement in your deals.</p>
+            <h2>Why Choose SelfServe Timeshare?</h2>
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <div class="benefit-icon">💰</div>
+                    <h3>No Commission Fees</h3>
+                    <p>Keep 100% of your sale proceeds. No agent commissions or hidden fees.</p>
                 </div>
-                <div class="feature-card">
-                    <div class="feature-icon">💰</div>
-                    <div class="feature-title">Keep 100% of Proceeds</div>
-                    <p>No commissions, no transaction fees. Whatever you sell or rent for, you keep it all.</p>
+                <div class="benefit-card">
+                    <div class="benefit-icon">🤝</div>
+                    <h3>Direct Owner Contact</h3>
+                    <p>Connect directly with buyers and renters without middlemen.</p>
                 </div>
-                <div class="feature-card">
-                    <div class="feature-icon">📊</div>
-                    <div class="feature-title">Real Analytics</div>
-                    <p>Track views, inquiries, and performance. Know exactly how your listing is performing.</p>
+                <div class="benefit-card">
+                    <div class="benefit-icon">🔒</div>
+                    <h3>Secure Platform</h3>
+                    <p>Safe, secure environment for all your timeshare transactions.</p>
                 </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🤝</div>
-                    <div class="feature-title">Direct Owner Control</div>
-                    <p>You control pricing, availability, and all communication. Your property, your rules.</p>
+                <div class="benefit-card">
+                    <div class="benefit-icon">⚡</div>
+                    <h3>Fast & Easy</h3>
+                    <p>List your timeshare in minutes and start connecting with buyers.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Privacy Policy Section - A2P COMPLIANCE -->
+    <section class="privacy-section" id="privacy">
+        <div class="container">
+            <div class="privacy-content">
+                <h2>SMS Program & Privacy Information</h2>
+                
+                <h3>SMS Marketing Program</h3>
+                <p>By providing your phone number and checking the consent box above, you explicitly agree to receive marketing text messages from SelfServe Timeshare about our commission-free timeshare services, exclusive deals, property listings, and platform updates.</p>
+                
+                <h3>Message Frequency & Rates</h3>
+                <p>Message frequency varies based on market activity and promotional campaigns. You may receive up to 4 marketing messages per month. Message and data rates may apply depending on your mobile carrier plan.</p>
+                
+                <h3>Opt-Out Instructions</h3>
+                <p>You can opt out of SMS communications at any time:</p>
+                <ul>
+                    <li>Reply <strong>STOP</strong> to any message to immediately unsubscribe</li>
+                    <li>Reply <strong>HELP</strong> for customer support information</li>
+                    <li>Contact support@selfservetimeshare.com to request removal</li>
+                </ul>
+                
+                <h3>Privacy Protection</h3>
+                <p>We do not share, sell, or rent your mobile phone number or personal information to third parties for marketing purposes. Your data remains private and is used solely for SelfServe Timeshare communications.</p>
+                
+                <p><a href="/privacy-policy" style="color: #2563eb; text-decoration: underline;">View Complete Privacy Policy</a></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="why-choose" id="faq">
+        <div class="container">
+            <h2>Frequently Asked Questions</h2>
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <h3>How does it work?</h3>
+                    <p>List your timeshare, set your price, and connect directly with interested buyers or renters through our secure platform.</p>
+                </div>
+                <div class="benefit-card">
+                    <h3>Are there any commission fees?</h3>
+                    <p>No! You keep 100% of your sale or rental proceeds. We only charge a monthly subscription fee.</p>
+                </div>
+                <div class="benefit-card">
+                    <h3>How do I handle transactions?</h3>
+                    <p>You handle all transactions directly with buyers/renters. We provide the platform for connection and communication.</p>
+                </div>
+                <div class="benefit-card">
+                    <h3>Is my information secure?</h3>
+                    <p>Yes, we use industry-standard security measures to protect your personal and listing information.</p>
                 </div>
             </div>
         </div>
@@ -665,240 +746,17 @@
     <!-- Footer -->
     <footer>
         <div class="container">
-            <p>&copy; 2025 SelfServe Timeshare. All rights reserved. | Built with trust and transparency in mind.</p>
+            <div class="footer-links">
+                <a href="/privacy-policy">Privacy Policy</a>
+                <a href="/terms">Terms of Service</a>
+                <a href="/contact">Contact</a>
+                <a href="/support">Support</a>
+            </div>
+            <p>&copy; 2025 SelfServe Timeshare. All rights reserved.</p>
         </div>
     </footer>
 
-    <!-- Login Modal -->
-    <div id="loginModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('loginModal')">&times;</span>
-            <h2>Sign In</h2>
-            <form id="loginForm">
-                <div class="form-group">
-                    <label for="loginUsername">Username:</label>
-                    <input type="text" id="loginUsername" name="username" required>
-                </div>
-                <div class="form-group">
-                    <label for="loginPassword">Password:</label>
-                    <input type="password" id="loginPassword" name="password" required>
-                </div>
-                <button type="submit" class="btn btn-primary" style="width: 100%;">Sign In</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Register Modal -->
-    <div id="registerModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('registerModal')">&times;</span>
-            <h2>Create Account</h2>
-            <form id="registerForm">
-                <div class="form-group">
-                    <label for="registerUsername">Username:</label>
-                    <input type="text" id="registerUsername" name="username" required>
-                </div>
-                <div class="form-group">
-                    <label for="registerEmail">Email:</label>
-                    <input type="email" id="registerEmail" name="email" required>
-                </div>
-                <div class="form-group">
-                    <label for="registerPassword">Password:</label>
-                    <input type="password" id="registerPassword" name="password" required>
-                </div>
-                <div class="form-group">
-                    <label for="registerFirstName">First Name:</label>
-                    <input type="text" id="registerFirstName" name="first_name">
-                </div>
-                <div class="form-group">
-                    <label for="registerLastName">Last Name:</label>
-                    <input type="text" id="registerLastName" name="last_name">
-                </div>
-                <button type="submit" class="btn btn-primary" style="width: 100%;">Create Account</button>
-            </form>
-        </div>
-    </div>
-
     <script>
-        // Modal functions
-        function openModal(modalId) {
-            document.getElementById(modalId).style.display = 'block';
-        }
-
-        function closeModal(modalId) {
-            document.getElementById(modalId).style.display = 'none';
-        }
-
-        // Close modal when clicking outside
-        window.onclick = function(event) {
-            if (event.target.classList.contains('modal')) {
-                event.target.style.display = 'none';
-            }
-        }
-
-        // Plan selection
-        // Open login modal
-        document.getElementById('loginBtn').addEventListener('click', function(e) {
-            e.preventDefault();
-            openModal('loginModal');
-        });
-
-        // Check if user is logged in and show/hide dashboard link
-        document.addEventListener('DOMContentLoaded', function() {
-            const userId = localStorage.getItem('userId');
-            if (userId) {
-                document.getElementById('dashboardLink').style.display = 'inline-block';
-                document.getElementById('loginBtn').textContent = 'Logout';
-                document.getElementById('loginBtn').onclick = function(e) {
-                    e.preventDefault();
-                    localStorage.clear();
-                    window.location.reload();
-                };
-            }
-        });
-
-        function selectPlan(planType, price) {
-            // Handle free browser registration
-            if (planType === 'free_browser') {
-                // Store free plan selection
-                localStorage.setItem('selectedPlan', JSON.stringify({
-                    type: 'free_browser',
-                    price: 0
-                }));
-                
-                // Open registration modal for free account
-                openModal('registerModal');
-                return;
-            }
-            
-            // Store selected paid plan in localStorage
-            localStorage.setItem('selectedPlan', JSON.stringify({
-                type: planType,
-                price: price
-            }));
-            
-            // Open registration modal
-            openModal('registerModal');
-        }
-
-        // Login form submission
-        document.getElementById('loginForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const formData = new FormData(e.target);
-            const data = Object.fromEntries(formData);
-            
-            try {
-                const response = await fetch('/auth/login', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(data)
-                });
-                
-                const result = await response.json();
-                
-                if (response.ok) {
-                    alert('Login successful!');
-                    localStorage.setItem('user', JSON.stringify(result.user));
-                    closeModal('loginModal');
-                    // Redirect to dashboard or update UI
-                } else {
-                    alert('Login failed: ' + result.error);
-                }
-            } catch (error) {
-                alert('Login failed: ' + error.message);
-            }
-        });
-
-        // Register form submission
-        document.getElementById('registerForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const formData = new FormData(e.target);
-            const data = Object.fromEntries(formData);
-            
-            try {
-                const response = await fetch('/auth/register', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(data)
-                });
-                
-                const result = await response.json();
-                
-                if (response.ok) {
-                    // Store user data temporarily
-                    localStorage.setItem('tempUser', JSON.stringify(result));
-                    closeModal('registerModal');
-                    
-                    // Check if user selected a plan
-                    const selectedPlan = localStorage.getItem('selectedPlan');
-                    if (selectedPlan) {
-                        const plan = JSON.parse(selectedPlan);
-                        
-                        // Handle free browser account
-                        if (plan.type === 'free_browser') {
-                            // Complete free registration
-                            localStorage.setItem('user', JSON.stringify(result));
-                            localStorage.removeItem('tempUser');
-                            localStorage.removeItem('selectedPlan');
-                            
-                            alert('🎉 Free account created successfully!\n\nYou can now:\n✅ Browse all property listings\n✅ Contact property owners\n✅ Save favorite listings\n\nTo list your own properties, upgrade to a paid plan anytime.');
-                            window.location.href = '/listings';
-                            return;
-                        }
-                        
-                        // Redirect to Stripe payment for paid plans
-                        redirectToStripePayment(result.id, plan);
-                    } else {
-                        alert('Please select a plan to continue.');
-                        window.location.href = '#pricing';
-                    }
-                } else {
-                    alert('Registration failed: ' + result.error);
-                }
-            } catch (error) {
-                alert('Registration failed: ' + error.message);
-            }
-        });
-
-        // Redirect to Stripe payment
-        async function redirectToStripePayment(userId, plan) {
-            try {
-                // Create Stripe checkout session
-                const response = await fetch('/create-checkout-session', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        user_id: userId,
-                        plan_type: plan.type,
-                        price: plan.price
-                    })
-                });
-                
-                const result = await response.json();
-                
-                if (response.ok && result.checkout_url) {
-                    // Redirect to Stripe checkout
-                    window.location.href = result.checkout_url;
-                } else {
-                    alert('Payment setup failed: ' + (result.error || 'Unknown error'));
-                    // Fallback: show payment required message
-                    alert('Payment is required to complete your subscription. Please contact support.');
-                }
-            } catch (error) {
-                alert('Payment setup failed: ' + error.message);
-                // Fallback: show payment required message
-                alert('Payment is required to complete your subscription. Please contact support.');
-            }
-        }
-
         // Smooth scrolling for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
@@ -906,14 +764,32 @@
                 const target = document.querySelector(this.getAttribute('href'));
                 if (target) {
                     target.scrollIntoView({
-                        behavior: 'smooth'
+                        behavior: 'smooth',
+                        block: 'start'
                     });
                 }
             });
         });
+
+        // SMS Form submission
+        document.getElementById('smsSignupForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const consent = document.getElementById('smsConsent').checked;
+            
+            if (!consent) {
+                alert('Please agree to receive SMS messages to continue.');
+                return;
+            }
+            
+            // Here you would normally send the data to your server
+            alert('Thank you for signing up for SMS updates! You will receive a confirmation message shortly.');
+            
+            // Reset form
+            this.reset();
+        });
     </script>
-    
-    <!-- Chatbot Script -->
-    <script src="chatbot.js"></script>
 </body>
 </html>
