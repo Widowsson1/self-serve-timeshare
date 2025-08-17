@@ -7,6 +7,10 @@ pages_bp = Blueprint('pages', __name__)
 def faq():
     return send_from_directory('static', 'faq.html')
 
+@pages_bp.route('/privacy-policy.html')
+def privacy_policy():
+    return send_from_directory('static', 'privacy-policy.html')
+
 @pages_bp.route('/chatbot.js')
 def chatbot_js():
     return send_from_directory('static', 'chatbot.js', mimetype='application/javascript')
