@@ -1,12 +1,16 @@
 import os
 import sys
+import threading
+import time
+import requests
+from datetime import datetime
 
 # Environment variables are loaded directly from Render
 
 # DON'T CHANGE THIS !!!
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 
-from flask import Flask, send_from_directory
+from flask import Flask, send_from_directory, jsonify
 from flask_cors import CORS
 from src.models.user import db
 from src.routes.user import user_bp
@@ -56,8 +60,59 @@ def index():
 def dashboard():
     return send_from_directory('static', 'dashboard.html')
 
+# Render wake-up ping endpoint
+@app.route('/ping')
+def ping():
+    return jsonify({
+        'status': 'alive',
+        'timestamp': datetime.now().isoformat(),
+        'message': 'SelfServe Timeshare is awake'
+    })
+
+# Health check endpoint
+@app.route('/health')
+def health():
+    return jsonify({
+        'status': 'healthy',
+        'timestamp': datetime.now().isoformat(),
+        'service': 'SelfServe Timeshare'
+    })
+
+def keep_alive():
+    """Function to ping the server every 14 minutes to prevent sleeping"""
+    while True:
+        try:
+            # Wait 14 minutes (840 seconds) - Render free tier sleeps after 15 minutes of inactivity
+            time.sleep(840)
+            
+            # Get the app URL from environment or use default
+            app_url = os.environ.get('RENDER_EXTERNAL_URL', 'https://self-serve-timeshare.onrender.com')
+            
+            # Ping the health endpoint
+            response = requests.get(f"{app_url}/ping", timeout=30)
+            print(f"Keep-alive ping sent at {datetime.now()}: Status {response.status_code}")
+            
+        except Exception as e:
+            print(f"Keep-alive ping failed at {datetime.now()}: {e}")
+
+# Start keep-alive thread when app starts
+def start_keep_alive():
+    """Start the keep-alive thread"""
+    keep_alive_thread = threading.Thread(target=keep_alive, daemon=True)
+    keep_alive_thread.start()
+    print("Keep-alive system started - pinging every 14 minutes")
+
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
+    
+    # Start keep-alive system
+    start_keep_alive()
+    
     app.run(host='0.0.0.0', port=5000, debug=True)
+else:
+    # For production deployment (Gunicorn), start keep-alive when module is imported
+    with app.app_context():
+        db.create_all()
+    start_keep_alive()
 
