@@ -4,6 +4,8 @@ from decimal import Decimal
 from src.models.user import db
 
 class Listing(db.Model):
+    __tablename__ = 'listing'
+    __table_args__ = {'extend_existing': True}
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     

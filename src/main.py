@@ -24,10 +24,17 @@ from src.routes.favorites import favorites_bp
 from src.routes.browser_auth import browser_auth_bp
 from src.routes.pricing import pricing_bp
 from src.routes.seo import seo_bp
+from src.routes.analytics import analytics_bp
+from src.routes.auth import auth_bp
+from src.routes.get_started import get_started_bp
 
 app = Flask(__name__, static_folder='static', static_url_path='/static')
 
 CORS(app)
+
+# Configure session
+app.config['SECRET_KEY'] = 'your-secret-key-here-change-in-production'
+app.config['SESSION_TYPE'] = 'filesystem'
 
 # Register blueprints
 app.register_blueprint(user_bp)
@@ -41,6 +48,9 @@ app.register_blueprint(favorites_bp)
 app.register_blueprint(browser_auth_bp)
 app.register_blueprint(pricing_bp)
 app.register_blueprint(seo_bp)
+app.register_blueprint(analytics_bp)
+app.register_blueprint(auth_bp)
+app.register_blueprint(get_started_bp)
 
 # Database configuration
 app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{os.path.join(os.path.dirname(__file__), 'database', 'app.db')}"
