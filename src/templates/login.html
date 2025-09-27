@@ -105,7 +105,7 @@
             transform: translateY(-2px);
         }
 
-        .signup-link {
+        .signup-link {        .signup-link {
             text-align: center;
             margin-top: 1.5rem;
         }
@@ -113,12 +113,26 @@
         .signup-link a {
             color: #667eea;
             text-decoration: none;
-            font-weight: 600;
         }
 
         .signup-link a:hover {
             text-decoration: underline;
         }
+
+        .forgot-password {
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        .forgot-password a {
+            color: #667eea;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .forgot-password a:hover {
+            text-decoration: underline;
+        }       }
 
         .error-message {
             background: #fee2e2;
@@ -187,6 +201,10 @@
 
             <button type="submit" class="btn">Sign In</button>
         </form>
+
+        <div class="forgot-password">
+            <p><a href="/forgot-password">Forgot your password?</a></p>
+        </div>
 
         <div class="signup-link">
             <p>Don't have an account? <a href="/signup">Create one here</a></p>

@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, render_template
 from datetime import datetime
 from src.models.user import User, db
 
@@ -111,7 +111,30 @@ def login():
         'user': user.to_dict()
     })
 
+@user_bp.route('/users/<int:user_id>/listings', methods=['GET'])
+def get_user_listings(user_id):
+    """Get listings for a specific user"""
+    try:
+        from src.models.listing import Listing
+        listings = Listing.query.filter_by(user_id=user_id).all()
+        return jsonify({
+            'listings': [listing.to_dict() for listing in listings]
+        })
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
 @user_bp.route('/auth/register', methods=['POST'])
 def register():
     """Register a new user"""
     return create_user()  # Reuse the create_user function
+
+@user_bp.route('/forgot-password')
+def forgot_password_page():
+    """Forgot password page"""
+    return render_template('forgot_password.html')
+
+@user_bp.route('/reset-password')
+def reset_password_page():
+    """Reset password page"""
+    return render_template('reset_password.html')
+

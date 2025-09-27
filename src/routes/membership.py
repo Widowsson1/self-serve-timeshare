@@ -5,6 +5,17 @@ from src.models.user import User
 
 membership_bp = Blueprint('membership', __name__)
 
+@membership_bp.route('/api/memberships', methods=['GET'])
+def get_api_memberships():
+    """Get memberships via API endpoint"""
+    try:
+        memberships = Membership.query.all()
+        return jsonify({
+            'memberships': [membership.to_dict() for membership in memberships]
+        })
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
 @membership_bp.route('/memberships', methods=['GET'])
 def get_memberships():
     """Get all memberships"""
