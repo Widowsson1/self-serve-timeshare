@@ -958,8 +958,11 @@
                     body: JSON.stringify({
                         user_id: userId,
                         plan_type: plan.type,
+                        billing_cycle: 'monthly', // Always default to monthly
                         price: plan.price,
-                        sms_consent: plan.smsConsent
+                        sms_consent: plan.smsConsent,
+                        isUpgrade: plan.isUpgrade || false,
+                        currentPlan: plan.currentPlan || 'free'
                     })
                 });
                 
@@ -970,13 +973,11 @@
                     window.location.href = result.checkout_url;
                 } else {
                     alert('Payment setup failed: ' + (result.error || 'Unknown error'));
-                    // Fallback: show payment required message
-                    alert('Payment is required to complete your subscription. Please contact support.');
+                    console.error('Payment setup error:', result);
                 }
             } catch (error) {
                 alert('Payment setup failed: ' + error.message);
-                // Fallback: show payment required message
-                alert('Payment is required to complete your subscription. Please contact support.');
+                console.error('Payment setup error:', error);
             }
         }
 
