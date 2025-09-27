@@ -66,8 +66,11 @@ def create_checkout_session():
             session['user_id'] = user_id
     
     try:
-        plan_type = request.json.get('plan_type')
-        billing_cycle = request.json.get('billing_cycle')  # 'monthly' or 'yearly'
+        data = request.json
+        plan_type = data.get('plan_type')
+        billing_cycle = data.get('billing_cycle', 'monthly')
+        is_upgrade = data.get('isUpgrade', False)
+        current_plan = data.get('currentPlan', 'free')
         
         # Define price IDs from Stripe dashboard
         price_ids = {
@@ -86,6 +89,11 @@ def create_checkout_session():
         if price_key not in price_ids:
             return jsonify({'error': 'Invalid plan or billing cycle'}), 400
         
+        # Handle upgrade logic
+        success_url = request.host_url + 'payment/success?session_id={CHECKOUT_SESSION_ID}'
+        if is_upgrade:
+            success_url += f'&upgrade=true&from_plan={current_plan}'
+        
         # Create checkout session
         checkout_session = stripe.checkout.Session.create(
             payment_method_types=['card'],
@@ -94,13 +102,15 @@ def create_checkout_session():
                 'quantity': 1,
             }],
             mode='subscription',
-            success_url=request.host_url + 'payment/success?session_id={CHECKOUT_SESSION_ID}',
+            success_url=success_url,
             cancel_url=request.host_url + 'payment/cancel',
-            client_reference_id=str(session['user_id']),
+            client_reference_id=str(user_id),
             metadata={
-                'user_id': str(session['user_id']),
+                'user_id': str(user_id),
                 'plan_type': plan_type,
-                'billing_cycle': billing_cycle
+                'billing_cycle': billing_cycle,
+                'is_upgrade': str(is_upgrade),
+                'current_plan': current_plan
             }
         )
         
