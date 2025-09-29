@@ -26,6 +26,7 @@ from src.routes.pricing import pricing_bp
 from src.routes.seo import seo_bp
 from src.routes.analytics import analytics_bp
 from src.routes.auth import auth_bp
+from src.routes.auth_simple import auth_simple_bp
 from src.routes.get_started import get_started_bp
 from src.routes.migration import migration_bp
 
@@ -51,6 +52,7 @@ app.register_blueprint(pricing_bp)
 app.register_blueprint(seo_bp)
 app.register_blueprint(analytics_bp)
 app.register_blueprint(auth_bp)
+app.register_blueprint(auth_simple_bp)
 app.register_blueprint(get_started_bp)
 app.register_blueprint(migration_bp)
 
