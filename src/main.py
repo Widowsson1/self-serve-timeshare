@@ -27,6 +27,7 @@ from src.routes.seo import seo_bp
 from src.routes.analytics import analytics_bp
 from src.routes.auth import auth_bp
 from src.routes.get_started import get_started_bp
+from src.routes.migration import migration_bp
 
 app = Flask(__name__, static_folder='static', static_url_path='/static')
 
@@ -51,6 +52,7 @@ app.register_blueprint(seo_bp)
 app.register_blueprint(analytics_bp)
 app.register_blueprint(auth_bp)
 app.register_blueprint(get_started_bp)
+app.register_blueprint(migration_bp)
 
 # Database configuration
 app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{os.path.join(os.path.dirname(__file__), 'database', 'app.db')}"
