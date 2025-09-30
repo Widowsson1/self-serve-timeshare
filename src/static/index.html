@@ -771,72 +771,76 @@
         }
 
         // Plan selection
-        function selectPlan(planType, price) {
-            // Check if user is already logged in
-            const userId = localStorage.getItem('userId');
-            const user = localStorage.getItem('user');
-            
-            if (userId && user) {
-                // User is logged in - check current plan and handle upgrade
-                const userData = JSON.parse(user);
-                const currentPlan = userData.subscription_plan || 'free';
+        async function selectPlan(planType, price) {
+            // Check if user is already logged in via server session
+            try {
+                const response = await fetch('/api/user/current', {
+                    method: 'GET',
+                    credentials: 'include'
+                });
                 
-                // Define plan hierarchy for upgrade validation
-                const planHierarchy = {
-                    'free': 0,
-                    'starter_monthly': 1,
-                    'basic_monthly': 2,
-                    'premium_monthly': 3,
-                    'unlimited_monthly': 4
-                };
-                
-                const currentPlanLevel = planHierarchy[currentPlan] || 0;
-                const selectedPlanLevel = planHierarchy[planType] || 0;
-                
-                if (selectedPlanLevel <= currentPlanLevel && currentPlan !== 'free') {
-                    // User trying to downgrade or select same plan
-                    alert(`You are currently on the ${currentPlan.replace('_', ' ').toUpperCase()} plan. You can only upgrade to a higher plan. To downgrade, please contact support.`);
-                    return;
-                }
-                
-                // Store selected plan
-                localStorage.setItem('selectedPlan', JSON.stringify({
-                    type: planType,
-                    price: price,
-                    isUpgrade: true,
-                    currentPlan: currentPlan
-                }));
-                
-                // Show upgrade confirmation
-                const planNames = {
-                    'starter_monthly': 'Starter Plan ($9.99/month)',
-                    'basic_monthly': 'Basic Plan ($19.99/month)',
-                    'premium_monthly': 'Premium Plan ($29.99/month)',
-                    'unlimited_monthly': 'Unlimited Plan ($39.99/month)'
-                };
-                
-                const confirmMessage = currentPlan === 'free' 
-                    ? `Upgrade from Free Account to ${planNames[planType]}?`
-                    : `Upgrade from ${planNames[currentPlan]} to ${planNames[planType]}?`;
-                
-                if (confirm(confirmMessage)) {
-                    // Redirect directly to payment for existing users
-                    redirectToStripePayment(userData.id, {
+                if (response.ok) {
+                    const userData = await response.json();
+                    // User is logged in - check current plan and handle upgrade
+                    const currentPlan = userData.subscription_plan || 'free';
+                    
+                    // Define plan hierarchy for upgrade validation
+                    const planHierarchy = {
+                        'free': 0,
+                        'starter_monthly': 1,
+                        'basic_monthly': 2,
+                        'premium_monthly': 3,
+                        'unlimited_monthly': 4
+                    };
+                    
+                    const currentPlanLevel = planHierarchy[currentPlan] || 0;
+                    const selectedPlanLevel = planHierarchy[planType] || 0;
+                    
+                    if (selectedPlanLevel <= currentPlanLevel && currentPlan !== 'free') {
+                        // User trying to downgrade or select same plan
+                        alert(`You are currently on the ${currentPlan.replace('_', ' ').toUpperCase()} plan. You can only upgrade to a higher plan. To downgrade, please contact support.`);
+                        return;
+                    }
+                    
+                    // Show upgrade confirmation
+                    const planNames = {
+                        'starter_monthly': 'Starter Plan ($9.99/month)',
+                        'basic_monthly': 'Basic Plan ($19.99/month)',
+                        'premium_monthly': 'Premium Plan ($29.99/month)',
+                        'unlimited_monthly': 'Unlimited Plan ($39.99/month)'
+                    };
+                    
+                    const confirmMessage = currentPlan === 'free' 
+                        ? `Upgrade from Free Account to ${planNames[planType]}?`
+                        : `Upgrade from ${planNames[currentPlan]} to ${planNames[planType]}?`;
+                    
+                    if (confirm(confirmMessage)) {
+                        // Redirect directly to payment for existing users
+                        redirectToStripePayment(userData.id, {
+                            type: planType,
+                            price: price,
+                            smsConsent: userData.sms_consent || false,
+                            isUpgrade: true,
+                            currentPlan: currentPlan
+                        });
+                    }
+                } else {
+                    // User not logged in - store plan and show registration
+                    localStorage.setItem('selectedPlan', JSON.stringify({
                         type: planType,
-                        price: price,
-                        smsConsent: userData.sms_consent || false,
-                        isUpgrade: true,
-                        currentPlan: currentPlan
-                    });
+                        price: price
+                    }));
+                    
+                    // Open registration modal
+                    openModal('registerModal');
                 }
-            } else {
-                // User not logged in - store plan and show registration
+            } catch (error) {
+                console.error('Error checking authentication:', error);
+                // Fallback to registration if auth check fails
                 localStorage.setItem('selectedPlan', JSON.stringify({
                     type: planType,
                     price: price
                 }));
-                
-                // Open registration modal
                 openModal('registerModal');
             }
         }
