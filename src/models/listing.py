@@ -1,7 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from decimal import Decimal
-from src.models.user import db
+from models.user_fixed import db
 
 class Listing(db.Model):
     __tablename__ = 'listing'

@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Membership Management - SelfServe Timeshare</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .current-plan {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 40px;
+            border-left: 5px solid #28a745;
+        }
+        
+        .current-plan h2 {
+            color: #28a745;
+            margin-bottom: 15px;
+        }
+        
+        .plans-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .plan-card {
+            border: 2px solid #e9ecef;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .plan-card:hover {
+            border-color: #007bff;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,123,255,0.1);
+        }
+        
+        .plan-card.current {
+            border-color: #28a745;
+            background: #f8fff9;
+        }
+        
+        .plan-card.popular {
+            border-color: #ffc107;
+            position: relative;
+        }
+        
+        .plan-card.popular::before {
+            content: "Most Popular";
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #ffc107;
+            color: #000;
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        
+        .plan-name {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .plan-price {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #007bff;
+            margin-bottom: 20px;
+        }
+        
+        .plan-features {
+            list-style: none;
+            margin-bottom: 30px;
+        }
+        
+        .plan-features li {
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .plan-features li:last-child {
+            border-bottom: none;
+        }
+        
+        .plan-features li::before {
+            content: "✓";
+            color: #28a745;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        .btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn:hover {
+            background: #0056b3;
+            transform: translateY(-2px);
+        }
+        
+        .btn:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .btn-success {
+            background: #28a745;
+        }
+        
+        .btn-success:hover {
+            background: #1e7e34;
+        }
+        
+        .billing-toggle {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .toggle-switch {
+            display: inline-flex;
+            background: #e9ecef;
+            border-radius: 25px;
+            padding: 5px;
+        }
+        
+        .toggle-option {
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .toggle-option.active {
+            background: #007bff;
+            color: white;
+        }
+        
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Membership Management</h1>
+            <p>Manage your SelfServe Timeshare subscription</p>
+        </div>
+        
+        <div class="content">
+            {% if request.args.get('error') %}
+            <div class="error-message">
+                Error: {{ request.args.get('error') }}
+            </div>
+            {% endif %}
+            
+            {% if request.args.get('cancelled') %}
+            <div class="error-message">
+                Payment was cancelled. You can try again anytime.
+            </div>
+            {% endif %}
+            
+            <div class="current-plan">
+                <h2>Current Plan</h2>
+                <p><strong>Plan:</strong> {{ current_plan.title() if current_plan != 'free' else 'Free Browser Account' }}</p>
+                {% if current_membership %}
+                <p><strong>Status:</strong> {{ current_membership.status.title() }}</p>
+                <p><strong>Since:</strong> {{ current_membership.created_at.strftime('%B %d, %Y') }}</p>
+                {% endif %}
+            </div>
+            
+            <h2>Available Plans</h2>
+            
+            <div class="billing-toggle">
+                <div class="toggle-switch">
+                    <div class="toggle-option active" onclick="toggleBilling('monthly')">Monthly</div>
+                    <div class="toggle-option" onclick="toggleBilling('yearly')">Yearly</div>
+                </div>
+            </div>
+            
+            <div class="plans-grid">
+                <div class="plan-card" data-plan="starter">
+                    <div class="plan-name">Starter Plan</div>
+                    <div class="plan-price">
+                        <span class="monthly-price">$7.99</span>
+                        <span class="yearly-price" style="display: none;">$79.99</span>
+                        <small>/month</small>
+                    </div>
+                    <ul class="plan-features">
+                        <li>1 Property Listing</li>
+                        <li>Sale OR Rental (choose one)</li>
+                        <li>6 Photos per Listing</li>
+                        <li>Direct Owner Contact</li>
+                        <li>Basic Analytics</li>
+                        <li>Email Support</li>
+                    </ul>
+                    <button class="btn" onclick="upgradePlan('starter')">
+                        {% if current_plan == 'starter_monthly' or current_plan == 'starter_yearly' %}
+                            Current Plan
+                        {% else %}
+                            Select Plan
+                        {% endif %}
+                    </button>
+                </div>
+                
+                <div class="plan-card popular" data-plan="basic">
+                    <div class="plan-name">Basic Plan</div>
+                    <div class="plan-price">
+                        <span class="monthly-price">$14.99</span>
+                        <span class="yearly-price" style="display: none;">$149.99</span>
+                        <small>/month</small>
+                    </div>
+                    <ul class="plan-features">
+                        <li>2 Property Listings</li>
+                        <li>Sale AND Rental</li>
+                        <li>10 Photos per Listing</li>
+                        <li>Direct Owner Contact</li>
+                        <li>Advanced Analytics</li>
+                        <li>Priority Email Support</li>
+                        <li>Featured Listing Option</li>
+                    </ul>
+                    <button class="btn" onclick="upgradePlan('basic')">
+                        {% if current_plan == 'basic_monthly' or current_plan == 'basic_yearly' %}
+                            Current Plan
+                        {% else %}
+                            Select Plan
+                        {% endif %}
+                    </button>
+                </div>
+                
+                <div class="plan-card" data-plan="premium">
+                    <div class="plan-name">Premium Plan</div>
+                    <div class="plan-price">
+                        <span class="monthly-price">$24.99</span>
+                        <span class="yearly-price" style="display: none;">$249.99</span>
+                        <small>/month</small>
+                    </div>
+                    <ul class="plan-features">
+                        <li>5 Property Listings</li>
+                        <li>Sale AND Rental</li>
+                        <li>20 Photos per Listing</li>
+                        <li>Direct Owner Contact</li>
+                        <li>Premium Analytics & Insights</li>
+                        <li>Phone & Email Support</li>
+                        <li>Featured Listings Included</li>
+                        <li>Advanced Search Placement</li>
+                    </ul>
+                    <button class="btn" onclick="upgradePlan('premium')">
+                        {% if current_plan == 'premium_monthly' or current_plan == 'premium_yearly' %}
+                            Current Plan
+                        {% else %}
+                            Select Plan
+                        {% endif %}
+                    </button>
+                </div>
+                
+                <div class="plan-card" data-plan="unlimited">
+                    <div class="plan-name">Unlimited Plan</div>
+                    <div class="plan-price">
+                        <span class="monthly-price">$39.99</span>
+                        <span class="yearly-price" style="display: none;">$399.99</span>
+                        <small>/month</small>
+                    </div>
+                    <ul class="plan-features">
+                        <li>Unlimited Property Listings</li>
+                        <li>Sale AND Rental</li>
+                        <li>30 Photos per Listing</li>
+                        <li>Direct Owner Contact</li>
+                        <li>Premium Analytics & Insights</li>
+                        <li>Priority Phone & Email Support</li>
+                        <li>Featured Listings Included</li>
+                        <li>Top Search Placement</li>
+                        <li>Bulk Listing Tools</li>
+                        <li>API Access</li>
+                    </ul>
+                    <button class="btn" onclick="upgradePlan('unlimited')">
+                        {% if current_plan == 'unlimited_monthly' or current_plan == 'unlimited_yearly' %}
+                            Current Plan
+                        {% else %}
+                            Select Plan
+                        {% endif %}
+                    </button>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 40px;">
+                <a href="/dashboard" class="btn">Back to Dashboard</a>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        let currentBilling = 'monthly';
+        
+        function toggleBilling(billing) {
+            currentBilling = billing;
+            
+            // Update toggle appearance
+            document.querySelectorAll('.toggle-option').forEach(option => {
+                option.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Update prices
+            document.querySelectorAll('.monthly-price').forEach(price => {
+                price.style.display = billing === 'monthly' ? 'inline' : 'none';
+            });
+            document.querySelectorAll('.yearly-price').forEach(price => {
+                price.style.display = billing === 'yearly' ? 'inline' : 'none';
+            });
+        }
+        
+        function upgradePlan(planType) {
+            // Check if this is the current plan
+            const currentPlan = '{{ current_plan }}';
+            if (currentPlan === planType + '_' + currentBilling) {
+                alert('This is your current plan');
+                return;
+            }
+            
+            // Show loading
+            event.target.disabled = true;
+            event.target.textContent = 'Processing...';
+            
+            // Make API call to create checkout session
+            fetch('/api/upgrade-membership', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    plan_type: planType,
+                    billing_cycle: currentBilling
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert('Error: ' + data.error);
+                    event.target.disabled = false;
+                    event.target.textContent = 'Select Plan';
+                } else {
+                    // Redirect to Stripe checkout
+                    window.location.href = data.checkout_url;
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again.');
+                event.target.disabled = false;
+                event.target.textContent = 'Select Plan';
+            });
+        }
+    </script>
+</body>
+</html>

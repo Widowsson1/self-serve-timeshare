@@ -55,15 +55,10 @@ def subscribe(plan):
 @payment_bp.route('/create-checkout-session', methods=['POST'])
 def create_checkout_session():
     """Create Stripe checkout session"""
-    # Check for user authentication - handle both session and fallback
+    # Check for user authentication
     user_id = session.get('user_id')
     if not user_id:
-        # Try to get user from request or use default test user
-        user_id = request.json.get('user_id') if request.json else None
-        if not user_id:
-            # For testing purposes, use a default user ID
-            user_id = 1
-            session['user_id'] = user_id
+        return jsonify({'error': 'Authentication required'}), 401
     
     try:
         data = request.json
