@@ -52,7 +52,7 @@ def subscribe(plan):
     
     return render_template('subscribe.html', plan=plans[plan], plan_type=plan)
 
-@payment_bp.route('/create-checkout-session', methods=['POST'])
+@payment_bp.route('/create-checkout-session', methods=['POST', 'GET'])
 def create_checkout_session():
     """Create Stripe checkout session"""
     # Check for user authentication
@@ -61,11 +61,20 @@ def create_checkout_session():
         return jsonify({'error': 'Authentication required'}), 401
     
     try:
-        data = request.json
-        plan_type = data.get('plan_type')
+        # Handle both POST (JSON) and GET (URL params) requests
+        if request.method == 'POST':
+            data = request.json
+        else:
+            data = request.args.to_dict()
+        # Handle different parameter names for GET vs POST
+        plan_type = data.get('plan_type') or data.get('plan')
         billing_cycle = data.get('billing_cycle', 'monthly')
-        is_upgrade = data.get('isUpgrade', False)
+        is_upgrade = data.get('isUpgrade', False) or data.get('upgrade', False)
         current_plan = data.get('currentPlan', 'free')
+        
+        # Convert string 'true' to boolean for GET requests
+        if isinstance(is_upgrade, str):
+            is_upgrade = is_upgrade.lower() == 'true'
         
         # Define price IDs from Stripe dashboard
         price_ids = {
@@ -109,7 +118,11 @@ def create_checkout_session():
             }
         )
         
-        return jsonify({'checkout_url': checkout_session.url})
+        # Return JSON for POST requests, redirect for GET requests
+        if request.method == 'POST':
+            return jsonify({'checkout_url': checkout_session.url})
+        else:
+            return redirect(checkout_session.url)
         
     except Exception as e:
         return jsonify({'error': str(e)}), 500
