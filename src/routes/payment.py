@@ -1,7 +1,9 @@
-from flask import Blueprint, request, jsonify, render_template, redirect, url_for, flash, session
+from flask import Blueprint, request, jsonify, session, redirect, url_for, flash, render_template
 import stripe
 import os
+import logging
 from src.models.user import User, db
+from src.logging_config import log_payment_attempt, log_stripe_error, log_authentication_issue
 
 payment_bp = Blueprint('payment', __name__)
 
@@ -55,10 +57,18 @@ def subscribe(plan):
 @payment_bp.route('/create-checkout-session', methods=['POST', 'GET'])
 def create_checkout_session():
     """Create Stripe checkout session"""
+    logger = logging.getLogger('payment')
+    
+    # Log the request details
+    logger.info(f"Payment request received - Method: {request.method}, Args: {dict(request.args)}, JSON: {request.get_json() if request.is_json else 'None'}")
+    
     # Check for user authentication
     user_id = session.get('user_id')
     if not user_id:
+        log_authentication_issue(None, "No user_id in session", f"Session keys: {list(session.keys())}")
         return jsonify({'error': 'Authentication required'}), 401
+    
+    logger.info(f"Authenticated user: {user_id}")
     
     try:
         # Handle both POST (JSON) and GET (URL params) requests
@@ -75,6 +85,20 @@ def create_checkout_session():
         # Convert string 'true' to boolean for GET requests
         if isinstance(is_upgrade, str):
             is_upgrade = is_upgrade.lower() == 'true'
+        
+        # Log payment attempt
+        log_payment_attempt(user_id, plan_type, "checkout_session_request", {
+            'billing_cycle': billing_cycle,
+            'is_upgrade': is_upgrade,
+            'current_plan': current_plan
+        })
+        
+        # Validate Stripe API key
+        if not stripe.api_key:
+            log_stripe_error("Missing Stripe API key", "API key not configured")
+            return jsonify({'error': 'Payment system configuration error'}), 500
+        
+        logger.info(f"Stripe API key configured: {stripe.api_key[:7]}...")
         
         # Define price IDs from Stripe dashboard
         price_ids = {
@@ -98,25 +122,48 @@ def create_checkout_session():
         if is_upgrade:
             success_url += f'&upgrade=true&from_plan={current_plan}'
         
+        # Log Stripe checkout session creation attempt
+        logger.info(f"Creating Stripe checkout session - Price ID: {price_ids[price_key]}, User: {user_id}")
+        
         # Create checkout session
-        checkout_session = stripe.checkout.Session.create(
-            payment_method_types=['card'],
-            line_items=[{
-                'price': price_ids[price_key],
-                'quantity': 1,
-            }],
-            mode='subscription',
-            success_url=success_url,
-            cancel_url=request.host_url + 'payment/cancel',
-            client_reference_id=str(user_id),
-            metadata={
-                'user_id': str(user_id),
-                'plan_type': plan_type,
-                'billing_cycle': billing_cycle,
-                'is_upgrade': str(is_upgrade),
-                'current_plan': current_plan
-            }
-        )
+        try:
+            checkout_session = stripe.checkout.Session.create(
+                payment_method_types=['card'],
+                line_items=[{
+                    'price': price_ids[price_key],
+                    'quantity': 1,
+                }],
+                mode='subscription',
+                success_url=success_url,
+                cancel_url=request.host_url + 'payment/cancel',
+                client_reference_id=str(user_id),
+                metadata={
+                    'user_id': str(user_id),
+                    'plan_type': plan_type,
+                    'billing_cycle': billing_cycle,
+                    'is_upgrade': str(is_upgrade),
+                    'current_plan': current_plan
+                }
+            )
+            
+            logger.info(f"Stripe checkout session created successfully - Session ID: {checkout_session.id}")
+            log_payment_attempt(user_id, plan_type, "checkout_session_created", {
+                'session_id': checkout_session.id,
+                'checkout_url': checkout_session.url
+            })
+            
+        except stripe.error.InvalidRequestError as e:
+            log_stripe_error(e, f"Invalid request for user {user_id}, plan {plan_type}")
+            return jsonify({'error': f'Invalid payment request: {str(e)}'}), 400
+        except stripe.error.AuthenticationError as e:
+            log_stripe_error(e, "Stripe authentication failed")
+            return jsonify({'error': 'Payment system authentication error'}), 500
+        except stripe.error.APIConnectionError as e:
+            log_stripe_error(e, "Stripe API connection failed")
+            return jsonify({'error': 'Payment system connection error'}), 500
+        except stripe.error.StripeError as e:
+            log_stripe_error(e, f"General Stripe error for user {user_id}")
+            return jsonify({'error': f'Payment system error: {str(e)}'}), 500
         
         # Return JSON for POST requests, redirect for GET requests
         if request.method == 'POST':
@@ -125,6 +172,10 @@ def create_checkout_session():
             return redirect(checkout_session.url)
         
     except Exception as e:
+        logger.error(f"Unexpected error in create_checkout_session: {str(e)}", exc_info=True)
+        log_payment_attempt(user_id if 'user_id' in locals() else 'unknown', 
+                          plan_type if 'plan_type' in locals() else 'unknown', 
+                          "unexpected_error", str(e))
         return jsonify({'error': str(e)}), 500
 
 @payment_bp.route('/success')
