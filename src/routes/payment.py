@@ -99,39 +99,22 @@ def create_checkout_session():
         
         logger.info(f"Stripe API key loaded: {stripe.api_key[:7]}... (length: {len(stripe.api_key)})")
         
-        # Define plan pricing for dynamic price creation in test mode
-        plan_prices = {
-            'starter': {'monthly': 7.99, 'yearly': 79.99},
-            'basic': {'monthly': 14.99, 'yearly': 149.99},
-            'premium': {'monthly': 24.99, 'yearly': 249.99},
-            'unlimited': {'monthly': 39.99, 'yearly': 399.99}
+        # Define test price IDs from Stripe dashboard
+        price_ids = {
+            'starter_monthly': 'price_1SDubcEQGduXa1ejbJzcEG3k',
+            'basic_monthly': 'price_1SDucbEQGduXa1ejCrkj08HX', 
+            'premium_monthly': 'price_1SDud1EQGduXa1ej6bylRcbB',
+            'unlimited_monthly': 'price_1SDudZEQGduXa1ejpRT2KC6Y'
         }
         
-        if plan_type not in plan_prices or billing_cycle not in plan_prices[plan_type]:
-            log_stripe_error("Invalid plan configuration", f"Plan '{plan_type}' with billing '{billing_cycle}' not found")
+        price_key = f"{plan_type}_{billing_cycle}"
+        
+        if price_key not in price_ids:
+            log_stripe_error("Invalid plan configuration", f"Plan key '{price_key}' not found in price_ids")
             return jsonify({'error': 'Invalid plan or billing cycle'}), 400
         
-        # Get price for this plan
-        price_amount = plan_prices[plan_type][billing_cycle]
-        
-        # Create dynamic price for test mode compatibility
-        try:
-            price = stripe.Price.create(
-                unit_amount=int(price_amount * 100),  # Convert to cents
-                currency='usd',
-                recurring={
-                    'interval': 'month' if billing_cycle == 'monthly' else 'year'
-                },
-                product_data={
-                    'name': f'{plan_type.title()} Plan ({billing_cycle.title()})',
-                    'description': f'Self Serve Timeshare {plan_type.title()} subscription'
-                }
-            )
-            price_id = price.id
-            logger.info(f"Created dynamic price: {price_id} for ${price_amount}")
-        except Exception as e:
-            log_stripe_error("Price creation failed", str(e))
-            return jsonify({'error': 'Payment system configuration error'}), 500
+        price_id = price_ids[price_key]
+        logger.info(f"Using test price ID: {price_id} for {plan_type} {billing_cycle}")
         
         # Prepare success URL with upgrade info if needed
         success_url = 'https://www.selfservetimeshare.com/payment/success?session_id={CHECKOUT_SESSION_ID}'
