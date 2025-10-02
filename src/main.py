@@ -32,6 +32,7 @@ from src.routes.migration import migration_bp
 from src.routes.membership_upgrade import membership_upgrade_bp
 from src.routes.web_migration import web_migration_bp
 from src.routes.user_api import user_api_bp
+from src.routes.plan_upgrade import plan_upgrade_bp
 
 app = Flask(__name__, static_folder='static', static_url_path='/static')
 
@@ -61,6 +62,7 @@ app.register_blueprint(migration_bp)
 app.register_blueprint(membership_upgrade_bp)
 app.register_blueprint(web_migration_bp)
 app.register_blueprint(user_api_bp)
+app.register_blueprint(plan_upgrade_bp)
 
 # Database configuration
 app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{os.path.join(os.path.dirname(__file__), 'database', 'app.db')}"
