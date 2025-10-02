@@ -39,12 +39,12 @@ def handle_plan_upgrade(plan_type, price):
         return redirect(url_for('auth.register'))
     
     try:
-        # Define price IDs from Stripe dashboard
+        # Define price IDs from Stripe dashboard (TEST MODE)
         price_ids = {
-            'starter_monthly': 'price_1RrT7TEQGduXa1ejI6QlMX5K',
-            'basic_monthly': 'price_1RrNMgEQGduXa1ejMBFMZ9r2',
-            'premium_monthly': 'price_1RrNQ5EQGduXa1ejvFm1BRZW',
-            'unlimited_monthly': 'price_1RrT8QEQGduXa1ejxd6G9k8C'
+            'starter_monthly': 'price_1SDubcEQGduXa1ejbJzcEG3k',
+            'basic_monthly': 'price_1SDucbEQGduXa1ejCrkj08HX',
+            'premium_monthly': 'price_1SDud1EQGduXa1ej6bylRcbB',
+            'unlimited_monthly': 'price_1SDudZEQGduXa1ejpRT2KC6Y'
         }
         
         if plan_type not in price_ids:
