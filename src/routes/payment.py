@@ -89,12 +89,15 @@ def create_checkout_session():
             'current_plan': current_plan
         })
         
+        # Ensure Stripe API key is loaded fresh from environment
+        stripe.api_key = os.getenv('STRIPE_SECRET_KEY')
+        
         # Validate Stripe API key
         if not stripe.api_key:
-            log_stripe_error("Missing Stripe API key", "API key not configured")
+            log_stripe_error("Missing Stripe API key", f"Environment check: STRIPE_SECRET_KEY={'set' if os.getenv('STRIPE_SECRET_KEY') else 'not set'}")
             return jsonify({'error': 'Payment system configuration error'}), 500
         
-        logger.info(f"Stripe API key configured: {stripe.api_key[:7]}...")
+        logger.info(f"Stripe API key loaded: {stripe.api_key[:7]}... (length: {len(stripe.api_key)})")
         
         # Define price IDs from Stripe dashboard
         price_ids = {
