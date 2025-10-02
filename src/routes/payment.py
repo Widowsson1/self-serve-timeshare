@@ -99,30 +99,47 @@ def create_checkout_session():
         
         logger.info(f"Stripe API key loaded: {stripe.api_key[:7]}... (length: {len(stripe.api_key)})")
         
-        # Define price IDs from Stripe dashboard
-        price_ids = {
-            'starter_monthly': 'price_1RrT7TEQGduXa1ejI6QlMX5K',
-            'starter_yearly': 'price_1RrT5dEQGduXa1ejOeOK7APR',
-            'basic_monthly': 'price_1RrNMgEQGduXa1ejMBFMZ9r2',
-            'basic_yearly': 'price_1RrNMgEQGduXa1ejMBFMZ9r2',
-            'premium_monthly': 'price_1RrNQ5EQGduXa1ejvFm1BRZW',
-            'premium_yearly': 'price_1RrNQuEQGduXa1ejxTleWdfR',
-            'unlimited_monthly': 'price_1RrT8QEQGduXa1ejxd6G9k8C',
-            'unlimited_yearly': 'price_1RrT9BEQGduXa1ejdGgdltCw'
+        # Define plan pricing for dynamic price creation in test mode
+        plan_prices = {
+            'starter': {'monthly': 7.99, 'yearly': 79.99},
+            'basic': {'monthly': 14.99, 'yearly': 149.99},
+            'premium': {'monthly': 24.99, 'yearly': 249.99},
+            'unlimited': {'monthly': 39.99, 'yearly': 399.99}
         }
         
-        price_key = f"{plan_type}_{billing_cycle}"
-        
-        if price_key not in price_ids:
+        if plan_type not in plan_prices or billing_cycle not in plan_prices[plan_type]:
+            log_stripe_error("Invalid plan configuration", f"Plan '{plan_type}' with billing '{billing_cycle}' not found")
             return jsonify({'error': 'Invalid plan or billing cycle'}), 400
         
-        # Handle upgrade logic
-        success_url = request.host_url + 'payment/success?session_id={CHECKOUT_SESSION_ID}'
+        # Get price for this plan
+        price_amount = plan_prices[plan_type][billing_cycle]
+        
+        # Create dynamic price for test mode compatibility
+        try:
+            price = stripe.Price.create(
+                unit_amount=int(price_amount * 100),  # Convert to cents
+                currency='usd',
+                recurring={
+                    'interval': 'month' if billing_cycle == 'monthly' else 'year'
+                },
+                product_data={
+                    'name': f'{plan_type.title()} Plan ({billing_cycle.title()})',
+                    'description': f'Self Serve Timeshare {plan_type.title()} subscription'
+                }
+            )
+            price_id = price.id
+            logger.info(f"Created dynamic price: {price_id} for ${price_amount}")
+        except Exception as e:
+            log_stripe_error("Price creation failed", str(e))
+            return jsonify({'error': 'Payment system configuration error'}), 500
+        
+        # Prepare success URL with upgrade info if needed
+        success_url = 'https://www.selfservetimeshare.com/payment/success?session_id={CHECKOUT_SESSION_ID}'
         if is_upgrade:
             success_url += f'&upgrade=true&from_plan={current_plan}'
         
         # Log Stripe checkout session creation attempt
-        logger.info(f"Creating Stripe checkout session - Price ID: {price_ids[price_key]}, User: {user_id}")
+        logger.info(f"Creating Stripe checkout session - Price ID: {price_id}, User: {user_id}")
         
         # Create checkout session
         try:
