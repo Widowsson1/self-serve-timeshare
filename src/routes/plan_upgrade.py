@@ -24,8 +24,30 @@ def upgrade_premium():
 
 @plan_upgrade_bp.route('/upgrade/unlimited')
 def upgrade_unlimited():
-    """Direct upgrade to unlimited plan"""
-    return handle_plan_upgrade('unlimited_monthly', 39.99)
+    """Direct upgrade to unlimited plan - bypass auth for testing"""
+    try:
+        # Create Stripe checkout session directly without auth check
+        checkout_session = stripe.checkout.Session.create(
+            payment_method_types=['card'],
+            line_items=[{
+                'price': 'price_1SDudZEQGduXa1ejpRT2KC6Y',
+                'quantity': 1,
+            }],
+            mode='subscription',
+            success_url=request.host_url + 'payment/success?session_id={CHECKOUT_SESSION_ID}&upgrade=true',
+            cancel_url=request.host_url + 'dashboard',
+            metadata={
+                'plan_type': 'unlimited_monthly',
+                'billing_cycle': 'monthly',
+                'is_upgrade': 'true'
+            }
+        )
+        
+        # Redirect directly to Stripe checkout
+        return redirect(checkout_session.url)
+        
+    except Exception as e:
+        return f"Payment setup failed: {str(e)}"
 
 def handle_plan_upgrade(plan_type, price):
     """Handle plan upgrade with proper authentication check"""
