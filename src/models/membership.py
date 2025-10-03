@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 from models.user import db
 
 class Membership(db.Model):
+    __table_args__ = {'extend_existing': True}
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     membership_type = db.Column(db.String(50), nullable=False)  # 'basic', 'premium', etc.
