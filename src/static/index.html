@@ -713,7 +713,7 @@
     <div id="registerModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal('registerModal')">&times;</span>
-            <h2>Create Account</h2>
+            <h2 id="registerModalTitle">Create Account</h2>
             <form id="registerForm">
                 <div class="form-group">
                     <label for="registerUsername">Username:</label>
@@ -772,6 +772,22 @@
 
         // Plan selection
         async function selectPlan(planType, price) {
+            // Handle free browser plan differently
+            if (planType === 'free_browser') {
+                // For free browser plan, just store the plan and show registration
+                localStorage.setItem('selectedPlan', JSON.stringify({
+                    type: planType,
+                    price: price
+                }));
+                
+                // Update modal title for free signup
+                document.getElementById('registerModalTitle').textContent = 'Sign Up FREE to Browse Listings';
+                
+                // Open registration modal with appropriate messaging
+                openModal('registerModal');
+                return;
+            }
+            
             // Check if user is already logged in by trying to access dashboard
             try {
                 const response = await fetch('/dashboard', {
@@ -794,6 +810,9 @@
                         price: price
                     }));
                     
+                    // Update modal title for paid plan
+                    document.getElementById('registerModalTitle').textContent = `Create Account - ${planType.replace('_', ' ').toUpperCase()} Plan`;
+                    
                     // Open registration modal
                     openModal('registerModal');
                 }
@@ -804,6 +823,10 @@
                     type: planType,
                     price: price
                 }));
+                
+                // Update modal title for paid plan
+                document.getElementById('registerModalTitle').textContent = `Create Account - ${planType.replace('_', ' ').toUpperCase()} Plan`;
+                
                 openModal('registerModal');
             }
         }
