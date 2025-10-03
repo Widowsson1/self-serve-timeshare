@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify, session
-from src.models.listing import Listing, Favorite, db
-from src.models.user import User
+from models.listing import Listing, Favorite, db
+from models.user import User
 from datetime import datetime
 
 favorites_bp = Blueprint('favorites', __name__)

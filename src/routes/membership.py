@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request
 from datetime import datetime, timedelta
-from src.models.membership import Membership, db
-from src.models.user import User
+from models.membership import Membership, db
+from models.user import User
 
 membership_bp = Blueprint('membership', __name__)
 

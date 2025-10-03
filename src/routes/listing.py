@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify, session
-from src.models.listing import Listing, ListingPhoto, Favorite, db
-from src.models.user import User
-from src.models.membership import Membership
+from models.listing import Listing, ListingPhoto, Favorite, db
+from models.user import User
+from models.membership import Membership
 from datetime import datetime
 import json
 
@@ -326,3 +326,49 @@ def search_listings():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+
+@listing_bp.route('/api/listings/<int:listing_id>', methods=['GET'])
+def get_listing_detail(listing_id):
+    """Get detailed information for a specific listing"""
+    try:
+        # Get the listing
+        listing = Listing.query.get_or_404(listing_id)
+        
+        # Only show active listings to non-owners
+        user_id = request.headers.get('X-User-ID') or session.get('user_id')
+        if listing.status != 'active' and (not user_id or int(user_id) != listing.user_id):
+            return jsonify({'error': 'Listing not found'}), 404
+        
+        # Increment view count if not the owner
+        if not user_id or int(user_id) != listing.user_id:
+            listing.view_count = (listing.view_count or 0) + 1
+            listing.last_viewed = datetime.utcnow()
+            db.session.commit()
+        
+        # Return listing details
+        listing_data = listing.to_dict()
+        
+        # Add photos if available
+        photos = ListingPhoto.query.filter_by(listing_id=listing_id).all()
+        listing_data['photos'] = [photo.to_dict() for photo in photos]
+        
+        return jsonify(listing_data)
+        
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@listing_bp.route('/api/listings/<int:listing_id>/inquiry', methods=['POST'])
+def track_inquiry(listing_id):
+    """Track when someone inquires about a listing"""
+    try:
+        # Get the listing
+        listing = Listing.query.get_or_404(listing_id)
+        
+        # Increment inquiry count
+        listing.inquiry_count = (listing.inquiry_count or 0) + 1
+        db.session.commit()
+        
+        return jsonify({'message': 'Inquiry tracked successfully'})
+        
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500

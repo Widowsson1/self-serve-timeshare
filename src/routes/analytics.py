@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request, session
-from src.models.listing import Listing, db
-from src.models.user import User
+from models.listing import Listing, db
+from models.user import User
 from datetime import datetime, timedelta
 from sqlalchemy import func, and_
 

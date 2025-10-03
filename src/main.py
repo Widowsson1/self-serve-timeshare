@@ -12,7 +12,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 
 from flask import Flask, send_from_directory, jsonify
 from flask_cors import CORS
-from src.models.user import db
+from models.user import db
 from src.routes.user import user_bp
 from src.routes.payment import payment_bp
 from src.routes.membership import membership_bp
@@ -75,8 +75,8 @@ app.config['DATABASE_PATH'] = os.path.join(os.path.dirname(__file__), 'database'
 db.init_app(app)
 
 # Import all models to ensure they are registered
-from src.models.user import User
-from src.models.listing import Listing
+from models.user import User
+from models.listing import Listing
 
 @app.route('/')
 def index():

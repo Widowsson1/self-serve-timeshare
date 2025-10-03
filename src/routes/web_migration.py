@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request
 import sqlite3
 import os
-from src.models.user import db
+from models.user import db
 
 web_migration_bp = Blueprint('web_migration', __name__)
 

@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request, render_template
 from datetime import datetime
-from src.models.user import User, db
+from models.user import User, db
 
 user_bp = Blueprint('user', __name__)
 
@@ -115,7 +115,7 @@ def login():
 def get_user_listings(user_id):
     """Get listings for a specific user"""
     try:
-        from src.models.listing import Listing
+        from models.listing import Listing
         listings = Listing.query.filter_by(user_id=user_id).all()
         return jsonify({
             'listings': [listing.to_dict() for listing in listings]

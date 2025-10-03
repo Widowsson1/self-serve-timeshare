@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify, session
-from src.models.user import User, db
+from models.user import User, db
 from werkzeug.security import generate_password_hash, check_password_hash
 import re
 
@@ -137,7 +137,7 @@ def get_browser_profile():
             return jsonify({'error': 'User not found'}), 404
         
         # Get user stats
-        from src.models.listing import Favorite
+        from models.listing import Favorite
         favorite_count = Favorite.query.filter_by(user_id=user_id).count()
         
         profile_data = user.to_dict()

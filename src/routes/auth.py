@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request, session
-from src.models.user import User, db
+from models.user import User, db
 from datetime import datetime
 import secrets
 import string

@@ -2,7 +2,7 @@ from flask import Blueprint, request, jsonify, session, redirect, url_for, flash
 import stripe
 import os
 import logging
-from src.models.user import User, db
+from models.user import User, db
 from src.logging_config import log_payment_attempt, log_stripe_error, log_authentication_issue
 
 payment_bp = Blueprint('payment', __name__)
