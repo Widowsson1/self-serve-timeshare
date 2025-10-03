@@ -33,10 +33,10 @@ def handle_plan_upgrade(plan_type, price):
     # Check authentication
     user_id = session.get('user_id')
     if not user_id:
-        # User not authenticated - redirect to registration with plan selection
+        # User not authenticated - redirect to login page
         session['selected_plan'] = plan_type
         session['selected_price'] = price
-        return redirect(url_for('auth.register'))
+        return redirect('/login')
     
     try:
         # Define price IDs from Stripe dashboard (TEST MODE)
