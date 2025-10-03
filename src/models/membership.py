@@ -24,7 +24,7 @@ class Membership(db.Model):
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     
     # Relationship
-    user = db.relationship('User', backref=db.backref('memberships', lazy=True))
+    user = db.relationship('User')
 
     def __repr__(self):
         return f'<Membership {self.user_id} - {self.membership_type}>'
