@@ -1,6 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, timedelta
-from src.models.user import db
+from models.user import db
 
 class Membership(db.Model):
     id = db.Column(db.Integer, primary_key=True)

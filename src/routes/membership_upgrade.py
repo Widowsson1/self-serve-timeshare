@@ -1,6 +1,7 @@
-from flask import Blueprint, render_template, request, jsonify, session, redirect, url_for
-from src.models.user import User, db
-from src.models.membership import Membership
+from flask import Blueprint, render_template, request, jsonify, session, redirect
+from models.user import User, db
+from models.membership import Membership
+from datetime import datetime
 import stripe
 import os
 
@@ -176,6 +177,50 @@ def get_current_membership():
             'payment_amount': membership.payment_amount,
             'created_at': membership.created_at.isoformat(),
             'is_active': membership.is_active()
+        })
+        
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+@membership_upgrade_bp.route('/api/cancel-membership', methods=['POST'])
+def cancel_membership():
+    """Cancel current active membership"""
+    try:
+        user_id = session.get('user_id')
+        if not user_id:
+            return jsonify({'error': 'Not authenticated'}), 401
+        
+        # Get current active membership
+        current_membership = Membership.query.filter_by(
+            user_id=user_id, 
+            status='active'
+        ).first()
+        
+        if not current_membership:
+            return jsonify({'error': 'No active membership found'}), 404
+        
+        # Cancel the membership
+        current_membership.status = 'cancelled'
+        current_membership.updated_at = datetime.utcnow()
+        
+        # If there's a Stripe subscription, cancel it too
+        if current_membership.stripe_subscription_id:
+            try:
+                stripe.Subscription.modify(
+                    current_membership.stripe_subscription_id,
+                    cancel_at_period_end=True
+                )
+            except stripe.error.StripeError as e:
+                # Log the error but don't fail the cancellation
+                print(f"Stripe cancellation error: {e}")
+        
+        db.session.commit()
+        
+        return jsonify({
+            'success': True,
+            'message': 'Membership cancelled successfully',
+            'status': current_membership.status
         })
         
     except Exception as e:
